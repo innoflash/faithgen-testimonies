@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.activity_testimonies.*
 import net.faithgen.sdk.FaithGenActivity
 
 class TestimoniesActivity : FaithGenActivity() {
-    private var filter_text: String = ""
+    private var filter_text: String? = ""
     private var viewUtil: ViewUtil? = null
 
     override fun getPageTitle(): String {
@@ -24,16 +24,19 @@ class TestimoniesActivity : FaithGenActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_testimonies)
 
+        viewUtil = ViewUtil(this@TestimoniesActivity, view)
+        viewUtil?.initViewsCallbacks()
+
         searchLiveo.with(this) { charSequence ->
             filter_text = charSequence as String
-            //loadTestimonies
+            viewUtil?.loadTestimonies(Constants.TESTIMONIES_URL, filter_text.orEmpty(), true)
         }.showVoice()
             .hideKeyboardAfterSearch()
             .hideSearch {
                 toolbar.visibility = View.VISIBLE
                 filter_text = ""
-                searchLiveo.text(filter_text)
-                //load testimonies with reload
+                searchLiveo.text("")
+                viewUtil?.loadTestimonies(Constants.TESTIMONIES_URL, filter_text.orEmpty(), true)
             }.build()
 
         setOnOptionsClicked(R.drawable.ic_search_blue) {
@@ -41,8 +44,11 @@ class TestimoniesActivity : FaithGenActivity() {
             toolbar.visibility = View.GONE
             searchLiveo.show()
         }
+    }
 
-        viewUtil = ViewUtil(this, view)
+    override fun onStop() {
+        super.onStop()
+        viewUtil?.faithGenAPI?.cancelRequests()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -54,5 +60,7 @@ class TestimoniesActivity : FaithGenActivity() {
 
     override fun onStart() {
         super.onStart()
+        if(viewUtil?.testimonies?.size === 0)
+            viewUtil?.loadTestimonies(Constants.TESTIMONIES_URL, filter_text!!, true)
     }
 }
