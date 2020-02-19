@@ -89,12 +89,25 @@
             android:id="@+id/testimonyLink"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dimen10"
             android:background="@color/white"
             android:scaleType="centerInside"
             app:liv_circular_image="false"
             app:liv_icon="@drawable/ic_external_link"
             app:liv_icon_padding="@dimen/dimen10"
             app:liv_text="@string/visit_link" />
+
+        <TextView
+            android:id="@+id/tImages"
+            style="@style/block_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/images" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/testimonyImages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

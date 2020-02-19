@@ -1,4 +1,4 @@
-package net.faithgen.testimonies
+package net.faithgen.testimonies.viewholders
 
 import androidx.recyclerview.widget.RecyclerView
 import net.innoflash.iosview.lists.ListItemView3

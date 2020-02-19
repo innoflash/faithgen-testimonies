@@ -12,8 +12,8 @@ import net.faithgen.sdk.http.FaithGenAPI
 import net.faithgen.sdk.http.Pagination
 import net.faithgen.sdk.http.types.ServerResponse
 import net.faithgen.sdk.singletons.GSONSingleton
-import net.faithgen.sdk.utils.Dialogs
 import net.faithgen.testimonies.activities.TestimonyActivity
+import net.faithgen.testimonies.adapters.LI3Adapter
 import net.faithgen.testimonies.models.TestimoniesResponse
 import net.faithgen.testimonies.models.Testimony
 import net.innoflash.iosview.recyclerview.RecyclerTouchListener
@@ -83,7 +83,10 @@ class ViewUtil(val context: Context, private val view: View) : RecyclerViewClick
                     if (reload || testimonies!!.size === 0) {
                         testimonies.clear()
                         testimonies.addAll(testimoniesResponse.testimonies)
-                        adapter = LI3Adapter(context, testimonies)
+                        adapter = LI3Adapter(
+                            context,
+                            testimonies
+                        )
                         testimoniesView.adapter = adapter
                     } else {
                         testimonies.addAll(testimoniesResponse.testimonies)

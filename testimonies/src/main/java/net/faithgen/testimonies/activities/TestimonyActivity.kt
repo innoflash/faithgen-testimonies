@@ -3,6 +3,7 @@ package net.faithgen.testimonies.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.GridLayoutManager
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_testimony.*
 import net.faithgen.sdk.FaithGenActivity
@@ -14,9 +15,12 @@ import net.faithgen.sdk.utils.Dialogs
 import net.faithgen.sdk.utils.Utils
 import net.faithgen.testimonies.Constants
 import net.faithgen.testimonies.R
+import net.faithgen.testimonies.adapters.ImagesAdapter
 import net.faithgen.testimonies.models.Testimony
+import net.innoflash.iosview.recyclerview.RecyclerTouchListener
+import net.innoflash.iosview.recyclerview.RecyclerViewClickListener
 
-class TestimonyActivity : FaithGenActivity() {
+class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
     private var testimony: Testimony? = null
 
     private val faithGenAPI: FaithGenAPI by lazy {
@@ -73,7 +77,7 @@ class TestimonyActivity : FaithGenActivity() {
         userName.text = testimony?.user?.name
         testimonyTitle.text = testimony?.title
         testimonySummary.text =
-            "${testimony?.title}\n${testimony?.date?.formatted}\n${testimony?.date?.approx}"
+            "${testimony?.date?.formatted}\n${testimony?.date?.approx}\n${testimony?.comments_count} comments"
         testimonyBody.text = testimony?.testimony
 
         if (testimony?.resource === null)
@@ -84,5 +88,20 @@ class TestimonyActivity : FaithGenActivity() {
                 testimony?.resource
             )
         }
+
+        if(testimony?.images?.size === 0)
+            tImages.visibility = View.GONE
+        val adapter = ImagesAdapter(this@TestimonyActivity, testimony!!.images)
+        testimonyImages.layoutManager = GridLayoutManager(this@TestimonyActivity, 2)
+        testimonyImages.adapter = adapter
+        testimonyImages.addOnItemTouchListener(RecyclerTouchListener(this, testimonyImages, this))
+    }
+
+    override fun onClick(view: View?, position: Int) {
+
+    }
+
+    override fun onLongClick(view: View?, position: Int) {
+        //leave as is
     }
 }

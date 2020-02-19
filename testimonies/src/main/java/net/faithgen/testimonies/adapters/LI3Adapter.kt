@@ -1,10 +1,12 @@
-package net.faithgen.testimonies
+package net.faithgen.testimonies.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import net.faithgen.testimonies.viewholders.LI3Holder
+import net.faithgen.testimonies.R
 import net.faithgen.testimonies.models.Testimony
 import net.innoflash.iosview.lists.ListItemView3
 

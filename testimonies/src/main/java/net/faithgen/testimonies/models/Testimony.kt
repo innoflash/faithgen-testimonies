@@ -11,5 +11,6 @@ data class Testimony(
     val approved: Boolean,
     val user: User,
     val date: Date,
-    val images: List<Image>
+    val images: List<Image>,
+    val comments_count: Int
 )
