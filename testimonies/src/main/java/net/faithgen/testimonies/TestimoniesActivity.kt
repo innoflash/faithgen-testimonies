@@ -36,7 +36,7 @@ class TestimoniesActivity : FaithGenActivity() {
                 toolbar.visibility = View.VISIBLE
                 filter_text = ""
                 searchLiveo.text("")
-                viewUtil?.loadTestimonies(Constants.TESTIMONIES_URL, filter_text.orEmpty(), true)
+                viewUtil?.loadTestimonies(Constants.TESTIMONIES_URL, "", true)
             }.build()
 
         setOnOptionsClicked(R.drawable.ic_search_blue) {

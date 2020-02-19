@@ -63,8 +63,7 @@ class ViewUtil(val context: Context, private val view: View) : RecyclerViewClick
         if (filterText.length !== 0) {
             params = hashMapOf()
             params?.put(Constants.FILTER_TEXT, filterText)
-        }
-        //else params = null
+        } else params = null
 
         faithGenAPI.setParams(params)
             .setServerResponse(object : ServerResponse() {
