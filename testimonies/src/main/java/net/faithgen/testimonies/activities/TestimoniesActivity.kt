@@ -1,14 +1,15 @@
-package net.faithgen.testimonies
+package net.faithgen.testimonies.activities
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import br.com.liveo.searchliveo.SearchLiveo
 
 import kotlinx.android.synthetic.main.activity_testimonies.*
 import net.faithgen.sdk.FaithGenActivity
+import net.faithgen.testimonies.Constants
+import net.faithgen.testimonies.R
+import net.faithgen.testimonies.ViewUtil
 
 class TestimoniesActivity : FaithGenActivity() {
     private var filter_text: String? = ""
@@ -18,13 +19,15 @@ class TestimoniesActivity : FaithGenActivity() {
         return Constants.TESTIMONIES
     }
 
-    override fun getPageIcon(): Int = R.drawable.ic_testimonies_50
+    override fun getPageIcon(): Int =
+        R.drawable.ic_testimonies_50
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_testimonies)
 
-        viewUtil = ViewUtil(this@TestimoniesActivity, view)
+        viewUtil =
+            ViewUtil(this@TestimoniesActivity, view)
         viewUtil?.initViewsCallbacks()
 
         searchLiveo.with(this) { charSequence ->

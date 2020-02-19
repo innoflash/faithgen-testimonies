@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.TestimonyActivity">
+
+    <LinearLayout
+        style="@style/block.all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/userImage"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_user_100"
+            app:civ_border_color="@color/ios_blue"
+            app:civ_border_width="@dimen/dimen3" />
+
+        <TextView
+            android:id="@+id/userName"
+            style="@style/block_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/loading" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <View
+                        android:layout_width="@dimen/dimen5"
+                        android:layout_height="match_parent"
+                        android:background="@color/ios_blue" />
+
+                    <TextView
+                        android:id="@+id/testimonySummary"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif-condensed-light"
+                        android:paddingLeft="15dp"
+                        android:paddingTop="@dimen/dimen3"
+                        android:paddingBottom="@dimen/dimen3"
+                        android:text="@string/loading" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/testimonyTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:padding="@dimen/dimen10"
+                    android:text="@string/loading"
+                    android:textSize="25sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen10"
+            android:layout_marginBottom="@dimen/dimen10">
+
+            <TextView
+                android:id="@+id/testimonyBody"
+                style="@style/helvetica_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/loading" />
+        </androidx.cardview.widget.CardView>
+
+        <net.innoflash.iosview.lists.ListItemView
+            android:id="@+id/testimonyLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:scaleType="centerInside"
+            app:liv_circular_image="false"
+            app:liv_icon="@drawable/ic_external_link"
+            app:liv_icon_padding="@dimen/dimen10"
+            app:liv_text="@string/visit_link" />
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

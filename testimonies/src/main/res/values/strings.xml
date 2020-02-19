@@ -3,4 +3,5 @@
     <string name="title_activity_testimonies">TestimoniesActivity</string>
     <string name="search_testimonies">search testimonies</string>
     <string name="no_testimonies">No testimonies found!</string>
+    <string name="visit_link">Visit Link</string>
 </resources>

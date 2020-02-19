@@ -1,6 +1,7 @@
 package net.faithgen.testimonies
 
 import android.content.Context
+import android.content.Intent
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
@@ -12,6 +13,7 @@ import net.faithgen.sdk.http.Pagination
 import net.faithgen.sdk.http.types.ServerResponse
 import net.faithgen.sdk.singletons.GSONSingleton
 import net.faithgen.sdk.utils.Dialogs
+import net.faithgen.testimonies.activities.TestimonyActivity
 import net.faithgen.testimonies.models.TestimoniesResponse
 import net.faithgen.testimonies.models.Testimony
 import net.innoflash.iosview.recyclerview.RecyclerTouchListener
@@ -103,7 +105,9 @@ class ViewUtil(val context: Context, private val view: View) : RecyclerViewClick
     }
 
     override fun onClick(view: View?, position: Int) {
-
+        val intent = Intent(context, TestimonyActivity::class.java)
+        intent.putExtra(Constants.TESTIMONY_ID, testimonies.get(position).id)
+        context.startActivity(intent)
     }
 
     override fun onLongClick(view: View?, position: Int) {

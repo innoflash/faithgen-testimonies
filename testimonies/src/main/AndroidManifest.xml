@@ -3,10 +3,12 @@
     package="net.faithgen.testimonies">
 
     <application>
+        <activity android:name=".activities.TestimonyActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".TestimoniesActivity"
+            android:name=".activities.TestimoniesActivity"
             android:label="@string/title_activity_testimonies"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
