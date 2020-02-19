@@ -40,6 +40,5 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     api 'com.github.faithgen:android-sdk:v1.1.1' //faithgen sdk
-    implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.github.rudsonlive:searchliveo:1.1.2' //search library
 }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/noTestimonies"
+        android:layout_width="match_parent"
+        android:text="@string/no_testimonies"
+        android:layout_marginTop="@dimen/dimen7"
+        android:textAlignment="center"
+        android:fontFamily="sans-serif-smallcaps"
+        style="@style/card_footer_text"
+        android:layout_height="wrap_content"/>
+
+    <net.innoflash.iosview.swipelib.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingStart="@dimen/dimen3"
+        android:paddingLeft="@dimen/dimen3"
+        android:paddingRight="@dimen/dimen3">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/testimoniesView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </net.innoflash.iosview.swipelib.SwipeRefreshLayout>
+
+</LinearLayout>

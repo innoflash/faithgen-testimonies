@@ -13,4 +13,10 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:searchLiveoHint="@string/search_testimonies" />
+
+    <include
+        android:id="@+id/testimoniesLayout"
+        layout="@layout/testimonies_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

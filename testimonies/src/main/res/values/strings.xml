@@ -2,4 +2,5 @@
     <string name="app_name">testimonies</string>
     <string name="title_activity_testimonies">TestimoniesActivity</string>
     <string name="search_testimonies">search testimonies</string>
+    <string name="no_testimonies">No testimonies found!</string>
 </resources>

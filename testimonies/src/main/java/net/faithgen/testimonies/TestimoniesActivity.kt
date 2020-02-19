@@ -12,6 +12,8 @@ import net.faithgen.sdk.FaithGenActivity
 
 class TestimoniesActivity : FaithGenActivity() {
     private var filter_text: String = ""
+    private var viewUtil: ViewUtil? = null
+
     override fun getPageTitle(): String {
         return Constants.TESTIMONIES
     }
@@ -39,6 +41,8 @@ class TestimoniesActivity : FaithGenActivity() {
             toolbar.visibility = View.GONE
             searchLiveo.show()
         }
+
+        viewUtil = ViewUtil(this, view)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -46,5 +50,9 @@ class TestimoniesActivity : FaithGenActivity() {
         if (data != null)
             if (requestCode == SearchLiveo.REQUEST_CODE_SPEECH_INPUT)
                 searchLiveo.resultVoice(requestCode, resultCode, data);
+    }
+
+    override fun onStart() {
+        super.onStart()
     }
 }
