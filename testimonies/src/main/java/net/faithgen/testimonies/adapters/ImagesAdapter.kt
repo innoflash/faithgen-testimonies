@@ -10,6 +10,9 @@ import net.faithgen.testimonies.R
 import net.faithgen.testimonies.models.Image
 import net.faithgen.testimonies.viewholders.ImageHolder
 
+/**
+ * This is the adapter to render images on a single testimony
+ */
 class ImagesAdapter(val context: Context, val images: List<Image>) :
     RecyclerView.Adapter<ImageHolder>() {
     private val layoutInflater: LayoutInflater by lazy {

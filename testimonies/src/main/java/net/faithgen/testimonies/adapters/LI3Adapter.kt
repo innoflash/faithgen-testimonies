@@ -10,7 +10,10 @@ import net.faithgen.testimonies.R
 import net.faithgen.testimonies.models.Testimony
 import net.innoflash.iosview.lists.ListItemView3
 
-class LI3Adapter(private val context: Context, private val testimonies : List<Testimony>) : RecyclerView.Adapter<LI3Holder>(){
+/**
+ * This renders testimonies (adapter)
+ */
+final class LI3Adapter(private val context: Context, private val testimonies : List<Testimony>) : RecyclerView.Adapter<LI3Holder>(){
     private val inflater : LayoutInflater by lazy {
         LayoutInflater.from(context)
     }

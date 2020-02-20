@@ -10,6 +10,9 @@ import net.faithgen.testimonies.R
 import net.faithgen.testimonies.viewholders.TestimonyImageHolder
 import java.io.File
 
+/**
+ * This is a an adapter to display images for uploading
+ */
 final class TestimonyImagesAdapter(
     private val context: Context,
     private val images: List<Image>,

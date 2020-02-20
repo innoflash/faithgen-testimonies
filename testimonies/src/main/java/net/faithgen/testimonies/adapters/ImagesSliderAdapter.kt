@@ -12,6 +12,9 @@ import net.faithgen.testimonies.models.Image
 import net.faithgen.testimonies.models.Testimony
 import net.faithgen.testimonies.viewholders.ImageSliderHolder
 
+/**
+ * This is the adapter to lay out images on the slider
+ */
 final class ImagesSliderAdapter(
     private val context: Context,
     private val testimony: Testimony,
