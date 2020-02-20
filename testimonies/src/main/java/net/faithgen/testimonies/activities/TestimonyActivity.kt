@@ -94,7 +94,7 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
                         .build()
                 )
                 2 -> {
-                    intent = Intent(this@TestimonyActivity, UserTestimoniesActivity::class.java)
+                    val intent = Intent(this@TestimonyActivity, UserTestimoniesActivity::class.java)
                     intent.putExtra(Constants.USER_ID, testimony?.user?.id)
                     intent.putExtra(Constants.USER_NAME, testimony?.user?.name)
                     startActivity(intent)
@@ -133,7 +133,13 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
     }
 
     private fun openUpdateTestimony() {
-
+        val stringifiedTestimony : String by lazy {
+            GSONSingleton.instance.gson.toJson(testimony)
+        }
+        val intent = Intent(this, UpdateTestimonyActivity::class.java)
+        intent.putExtra(Constants.TESTIMONY_ID, testimony_id)
+        intent.putExtra(Constants.TESTIMONY, stringifiedTestimony)
+        startActivity(intent)
     }
 
     private fun fetchTestimony() {
