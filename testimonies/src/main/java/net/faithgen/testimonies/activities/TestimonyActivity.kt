@@ -31,6 +31,7 @@ import net.innoflash.iosview.recyclerview.RecyclerViewClickListener
 
 class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
     private var testimony: Testimony? = null
+    private var belongsToMe : Boolean = false
 
     private val faithGenAPI: FaithGenAPI by lazy {
         FaithGenAPI(this)
@@ -45,8 +46,6 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_testimony)
-
-        initMenu()
     }
 
     override fun onStart() {
@@ -61,9 +60,8 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
     }
 
     private fun initMenu() {
-        val belongsToMe: Boolean by lazy {
-            SDK.getUser() !== null && SDK.getUser().id.equals(testimony?.user?.id)
-        }
+        belongsToMe = SDK.getUser() !== null && SDK.getUser().id.equals(testimony?.user?.id)
+
         val moreTestimonies: String by lazy {
             if (!belongsToMe)
                 Constants.THEIR_TESTIMONIES
@@ -161,6 +159,8 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
     }
 
     private fun renderTestimony() {
+        initMenu()
+
         Picasso.get()
             .load(testimony?.user?.picture)
             .placeholder(R.drawable.ic_user_100)
@@ -183,8 +183,15 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
             )
         }
 
+        if(belongsToMe && testimony!!.approved)
+            approvedTestimony.visibility = View.VISIBLE
+
+        if(belongsToMe && !testimony!!.approved)
+            pendingTestimony.visibility = View.VISIBLE
+
         if (testimony?.images?.size === 0)
             tImages.visibility = View.GONE
+
         val adapter = ImagesAdapter(this@TestimonyActivity, testimony!!.images)
         testimonyImages.layoutManager = GridLayoutManager(this@TestimonyActivity, 2)
         testimonyImages.adapter = adapter

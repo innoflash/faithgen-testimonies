@@ -71,6 +71,26 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <Button
+            android:id="@+id/pendingTestimony"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen30"
+            android:background="@color/ios_blue"
+            android:gravity="center"
+            android:text="@string/approval_pending"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/approvedTestimony"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen30"
+            android:background="@color/ios_green"
+            android:gravity="center"
+            android:text="@string/testimony_approved"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

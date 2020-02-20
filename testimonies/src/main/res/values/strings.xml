@@ -14,4 +14,6 @@
     <string name="testimony_images">Testimony images</string>
     <string name="create_testimony">Create Testimony</string>
     <string name="select_images">Select Images</string>
+    <string name="approval_pending">Approval Pending</string>
+    <string name="testimony_approved">Testimony Approved</string>
 </resources>
