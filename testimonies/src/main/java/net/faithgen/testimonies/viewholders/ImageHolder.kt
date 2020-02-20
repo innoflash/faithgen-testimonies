@@ -4,5 +4,8 @@ import android.view.View
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 
-class ImageHolder(val imageView: ImageView) : RecyclerView.ViewHolder(imageView) {
+/**
+ * This is an image holder for the images displayed primarily on a single testimony
+ */
+final class ImageHolder(val imageView: ImageView) : RecyclerView.ViewHolder(imageView) {
 }

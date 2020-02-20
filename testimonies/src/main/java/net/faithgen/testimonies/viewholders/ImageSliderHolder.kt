@@ -6,6 +6,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.smarteist.autoimageslider.SliderViewAdapter
 import net.faithgen.testimonies.R
 
+/**
+ * This is an image adapter for the image slider
+ */
 final class ImageSliderHolder(itemView: View) : SliderViewAdapter.ViewHolder(itemView) {
     val commentImage: FloatingActionButton by lazy {
         itemView.findViewById<FloatingActionButton>(R.id.commentImage)
