@@ -56,12 +56,18 @@ class TestimoniesActivity : FaithGenActivity() {
         setOnOptionsClicked(R.drawable.ic_search_blue) { openSearch() }
     }
 
+    /**
+     * Opens the search bar
+     */
     private fun openSearch() {
         searchLiveo.visibility = View.VISIBLE
         toolbar.visibility = View.GONE
         searchLiveo.show()
     }
 
+    /**
+     * Checkes if user is logged in
+     */
     private fun isLoggedIn(): Boolean {
         if (SDK.getUser() !== null) return true
         Dialogs.showOkDialog(this@TestimoniesActivity, Constants.NOT_LOGGED_IN, false)
@@ -73,6 +79,9 @@ class TestimoniesActivity : FaithGenActivity() {
         viewUtil?.faithGenAPI?.cancelRequests()
     }
 
+    /**
+     * Receives results for speech to text for search
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (data != null)
@@ -86,6 +95,9 @@ class TestimoniesActivity : FaithGenActivity() {
             viewUtil?.loadTestimonies(Constants.TESTIMONIES_URL, filter_text!!, true)
     }
 
+    /**
+     * Initialize the menu for the page
+     */
     private fun initMenu() {
         menuItems.add(Pair(R.drawable.ic_new_copy_100, Constants.CREATE_TESTIMONY))
         menuItems.add(Pair(R.drawable.ic_testimonies_100, Constants.MY_TESTIMONIES))
