@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.GridLayoutManager
 import com.esafirm.imagepicker.features.ImagePicker
 import com.esafirm.imagepicker.features.ReturnMode
 import com.esafirm.imagepicker.model.Image
@@ -13,6 +14,7 @@ import net.faithgen.sdk.SDK
 import net.faithgen.sdk.utils.Dialogs
 import net.faithgen.testimonies.Constants
 import net.faithgen.testimonies.R
+import net.faithgen.testimonies.adapters.TestimonyImagesAdapter
 import java.util.ArrayList
 
 final class CreateTestimonyActivity : FaithGenActivity() {
@@ -52,12 +54,24 @@ final class CreateTestimonyActivity : FaithGenActivity() {
                     .exclude(images as ArrayList<Image>?)
                     .start()
         }
+
+        imagesList.layoutManager = GridLayoutManager(this, 2)
+    }
+
+    private fun renderImages() {
+        val adapter = TestimonyImagesAdapter(this, images, object : TestimonyImagesAdapter.ImageListener {
+            override fun onRemoved(position: Int, image: Image) {
+                images.removeAt(position)
+                renderImages()
+            }
+        })
+        imagesList.adapter = adapter
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(ImagePicker.shouldHandle(requestCode, resultCode, data)){
+        if (ImagePicker.shouldHandle(requestCode, resultCode, data)) {
             images.addAll(ImagePicker.getImages(data))
-            //render images
+            renderImages()
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
