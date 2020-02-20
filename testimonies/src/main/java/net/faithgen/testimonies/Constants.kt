@@ -1,11 +1,12 @@
 package net.faithgen.testimonies
 
 object Constants {
-    object Numbers{
+    object Numbers {
         const val PREMIUM_MAX = 5
         const val PREMIUM_PLUS_MAX = 10
         const val FREE_MAX = 0
     }
+
     const val TESTIMONIES = "Testimonies"
     const val TESTIMONIES_URL = "testimonies"
     const val FILTER_TEXT = "filter_text"
@@ -34,5 +35,7 @@ object Constants {
     const val PREMIUM_PLUS = "PremiumPlus"
     const val PREMIUM = "Premium"
     const val FREE = "Free"
-
+    const val TAP_TO_SELECT = "Tap to select"
+    const val IMAGES_FULL =
+        "You have selected the maximum number of images for this testimony, consider removing some if you need new ones"
 }
