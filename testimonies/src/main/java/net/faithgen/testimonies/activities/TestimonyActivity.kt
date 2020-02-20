@@ -24,6 +24,7 @@ import net.faithgen.sdk.utils.Utils
 import net.faithgen.testimonies.Constants
 import net.faithgen.testimonies.R
 import net.faithgen.testimonies.adapters.ImagesAdapter
+import net.faithgen.testimonies.dialogs.ImagesSliderDialog
 import net.faithgen.testimonies.models.Testimony
 import net.innoflash.iosview.recyclerview.RecyclerTouchListener
 import net.innoflash.iosview.recyclerview.RecyclerViewClickListener
@@ -191,7 +192,10 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
     }
 
     override fun onClick(view: View?, position: Int) {
-
+        val imagesSliderDialog: ImagesSliderDialog by lazy {
+            ImagesSliderDialog(testimony!!, position, this)
+        }
+        imagesSliderDialog.show(supportFragmentManager, Constants.SLIDERS_TAG)
     }
 
     override fun onLongClick(view: View?, position: Int) {

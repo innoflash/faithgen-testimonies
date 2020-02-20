@@ -9,6 +9,7 @@ object Constants {
     const val YOUR_TESTIMONIES = "Your testimonies"
     const val TESTIMONY_OPTIONS = "Testimony options"
     const val CONFIRM_DELETE = "You want to delete this testimony?"
+    const val CONFIRM_IMAGE_DELETE = "You want to delete this image?"
     const val TESTIMONY = "testimony_"
     const val USER_ID = "user_id"
     const val USER_NAME = "user_name"
@@ -18,4 +19,7 @@ object Constants {
     const val EDIT = "Edit testimony"
     const val DELETE = "Delete testimony"
     const val WARNING = "Are you sure!"
+    const val IMAGES = "images"
+    const val IMAGE_ID = "image_id"
+    const val SLIDERS_TAG = "sliders_tagx"
 }
