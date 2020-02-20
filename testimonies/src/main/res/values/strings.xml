@@ -5,4 +5,13 @@
     <string name="no_testimonies">No testimonies found!</string>
     <string name="visit_link">Visit Link</string>
     <string name="images">Testimony Images</string>
+    <string name="title_here">title here</string>
+    <string name="title">Title</string>
+    <string name="testimony">The Testimony</string>
+    <string name="testimony_here">testimony here</string>
+    <string name="resource">Resource</string>
+    <string name="link_">video or resource link</string>
+    <string name="testimony_images">Testimony images</string>
+    <string name="create_testimony">Create Testimony</string>
+    <string name="select_images">Select Images</string>
 </resources>

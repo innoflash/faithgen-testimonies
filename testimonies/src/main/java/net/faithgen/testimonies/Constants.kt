@@ -1,6 +1,11 @@
 package net.faithgen.testimonies
 
 object Constants {
+    object Numbers{
+        const val PREMIUM_MAX = 5
+        const val PREMIUM_PLUS_MAX = 10
+        const val FREE_MAX = 0
+    }
     const val TESTIMONIES = "Testimonies"
     const val TESTIMONIES_URL = "testimonies"
     const val FILTER_TEXT = "filter_text"
@@ -26,4 +31,8 @@ object Constants {
     const val MY_TESTIMONIES = "MY TESTIMONIES"
     const val SEARCH = "SEARCH"
     const val NOT_LOGGED_IN = "You need to login first to be able to use this part"
+    const val PREMIUM_PLUS = "PremiumPlus"
+    const val PREMIUM = "Premium"
+    const val FREE = "Free"
+
 }

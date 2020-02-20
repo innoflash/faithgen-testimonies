@@ -116,12 +116,13 @@ class TestimoniesActivity : FaithGenActivity() {
             arcMenu.setChildSize(menuItem.intrinsicHeight)
             arcMenu.addItem(menuItem, pair.second) {
                 when (index) {
-                    0 -> if (isLoggedIn()) startActivity(
-                        Intent(
-                            this@TestimoniesActivity,
-                            CreateTestimonyActivity::class.java
+                    0 -> if (!isLoggedIn())
+                        startActivity(
+                            Intent(
+                                this@TestimoniesActivity,
+                                CreateTestimonyActivity::class.java
+                            )
                         )
-                    )
                     1 -> if (isLoggedIn()) {
                         val intent =
                             Intent(this@TestimoniesActivity, UserTestimoniesActivity::class.java)

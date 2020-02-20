@@ -21,7 +21,7 @@ final class ImagesSliderAdapter(
     private val layoutInflater: LayoutInflater by lazy { LayoutInflater.from(context) }
 
     private val belongsToMe: Boolean by lazy {
-        SDK.getUser() !== null && SDK.getUser().id.equals(testimony.user.id)
+        SDK.getUser() !== null && SDK.getUser().id == testimony.user.id
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?): ImageSliderHolder {
