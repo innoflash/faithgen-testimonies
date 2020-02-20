@@ -3,7 +3,10 @@ package net.faithgen.testimonies.models
 import net.faithgen.sdk.models.Date
 import net.faithgen.sdk.models.User
 
-data class Testimony(
+/**
+ * This maps server testimony to native testimony
+ */
+final data class Testimony(
     val id : String,
     val title: String,
     val resource: String,

@@ -1,3 +1,6 @@
 package net.faithgen.testimonies.models
 
-data class TestimoniesResponse(val testimonies: List<Testimony>)
+/**
+ * This retrieves testimonies as list
+ */
+final data class TestimoniesResponse(val testimonies: List<Testimony>)

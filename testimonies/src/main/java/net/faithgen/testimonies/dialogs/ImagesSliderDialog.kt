@@ -27,7 +27,10 @@ import net.faithgen.testimonies.models.Testimony
 import net.innoflash.iosview.DialogFullScreen
 import net.innoflash.iosview.DialogToolbar
 
-class ImagesSliderDialog(
+/**
+ * This is a dialog to display testimony images for viewing
+ */
+final class ImagesSliderDialog(
     private val testimony: Testimony,
     private val position: Int,
     private val context: AppCompatActivity
