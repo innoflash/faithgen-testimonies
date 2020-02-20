@@ -1,6 +1,6 @@
 package net.faithgen.testimonies.activities
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
@@ -57,9 +57,16 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
     }
 
     private fun initMenu() {
+        val moreTestimonies : String by lazy {
+            if(SDK.getUser() === null || !SDK.getUser().id.equals(testimony?.user?.id))
+                Constants.THEIR_TESTIMONIES
+            else Constants.YOUR_TESTIMONIES
+        }
         val menuItems: MutableList<MenuItem> = mutableListOf()
         menuItems.add(MenuItem(R.drawable.ic_share_24, Constants.SHARE))
         menuItems.add(MenuItem(R.drawable.ic_comments_24, Constants.COMMENTS))
+        menuItems.add(MenuItem(R.drawable.ic_testimonies_24, moreTestimonies))
+        menuItems.add(MenuItem(R.drawable.ic_back_24, Constants.EXIT))
 
         val menu: Menu = MenuFactory.initializeMenu(this, menuItems)
         menu.setOnMenuItemListener(Constants.TESTIMONY_OPTIONS) { menuItem, position ->
@@ -76,6 +83,13 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
                         .setTitle(testimony?.title)
                         .build()
                 )
+                2 -> {
+                    intent = Intent(this@TestimonyActivity, UserTestimoniesActivity::class.java)
+                    intent.putExtra(Constants.USER_ID, testimony?.user?.id)
+                    intent.putExtra(Constants.USER_NAME, testimony?.user?.name)
+                    startActivity(intent)
+                }
+                3 -> finish()
             }
         }
         setOnOptionsClicked { menu.show() }
