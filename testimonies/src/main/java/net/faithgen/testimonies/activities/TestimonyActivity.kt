@@ -29,6 +29,9 @@ import net.faithgen.testimonies.models.Testimony
 import net.innoflash.iosview.recyclerview.RecyclerTouchListener
 import net.innoflash.iosview.recyclerview.RecyclerViewClickListener
 
+/**
+ * This renders the testimony from the server
+ */
 class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
     private var testimony: Testimony? = null
     private var belongsToMe : Boolean = false
@@ -59,6 +62,11 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
         faithGenAPI.cancelRequests()
     }
 
+    /**
+     * Creates the menu when the testimony is ready for rendering
+     *
+     * Some options are hidden is this user is not the author of the testimony
+     */
     private fun initMenu() {
         belongsToMe = SDK.getUser() !== null && SDK.getUser().id.equals(testimony?.user?.id)
 
@@ -113,6 +121,11 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
         setOnOptionsClicked { menu.show() }
     }
 
+    /**
+     * Prompts the user before deleting the testimony
+     *
+     * If it gets deleted the activity finishes
+     */
     private fun deleteTestimony(){
         faithGenAPI.setMethod(Request.Method.DELETE)
             .setParams(null)
@@ -131,6 +144,10 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
             .request("${Constants.TESTIMONIES_URL}/$testimony_id")
     }
 
+    /**
+     * This prepares the testimony for update
+     * and open the update activity
+     */
     private fun openUpdateTestimony() {
         val stringifiedTestimony : String by lazy {
             GSONSingleton.instance.gson.toJson(testimony)
@@ -141,6 +158,10 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
         startActivity(intent)
     }
 
+    /**
+     * This launches an HTTP call to fetch the testimony
+     * from the server using the initialized testimony id
+     */
     private fun fetchTestimony() {
         faithGenAPI.setParams(null)
             .setFinishOnFail(true)
@@ -158,6 +179,11 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
             .request("${Constants.TESTIMONIES_URL}/$testimony_id")
     }
 
+    /**
+     * This draws the menu
+     * Draws the menu to the view and subviews on the activity
+     * when its fetched from the server
+     */
     private fun renderTestimony() {
         initMenu()
 
@@ -198,6 +224,9 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
         testimonyImages.addOnItemTouchListener(RecyclerTouchListener(this, testimonyImages, this))
     }
 
+    /**
+     * This initialize image clicks events for the testimony images
+     */
     override fun onClick(view: View?, position: Int) {
         val imagesSliderDialog: ImagesSliderDialog by lazy {
             ImagesSliderDialog(testimony!!, position, this)

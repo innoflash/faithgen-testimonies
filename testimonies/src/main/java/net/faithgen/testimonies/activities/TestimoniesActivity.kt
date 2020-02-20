@@ -19,7 +19,12 @@ import net.faithgen.testimonies.Constants
 import net.faithgen.testimonies.R
 import net.faithgen.testimonies.ViewUtil
 
-class TestimoniesActivity : FaithGenActivity() {
+/**
+ * The activity to show all the testimonies in a paginated way
+ *
+ * Searching for specifics is allowed
+ */
+final class TestimoniesActivity : FaithGenActivity() {
     private var filter_text: String? = ""
     private var viewUtil: ViewUtil? = null
     private val menuItems: MutableList<Pair<Int, String>> = mutableListOf()

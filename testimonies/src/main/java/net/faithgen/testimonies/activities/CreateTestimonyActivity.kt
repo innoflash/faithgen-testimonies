@@ -22,6 +22,9 @@ import net.faithgen.testimonies.adapters.TestimonyImagesAdapter
 import net.faithgen.testimonies.tasks.EncodeImages
 import java.util.ArrayList
 
+/**
+ * The activity to create a testimony
+ */
 final class CreateTestimonyActivity : FaithGenActivity() {
     private val images: MutableList<Image> = mutableListOf()
     private val params: MutableMap<String, String> = mutableMapOf()
