@@ -68,6 +68,11 @@ final class CreateTestimonyActivity : FaithGenActivity() {
         createTestimony.setOnClickListener { prepareTestimony() }
     }
 
+    /**
+     * Prepares params for uploading
+     *
+     * If testimony has images it will encode first before uploading
+     */
     private fun prepareTestimony() {
         params.put(Constants.TITLE, testimonyTitle.value)
         params.put(Constants.TESTIMONY, testimonyBody.text.toString())
@@ -78,6 +83,9 @@ final class CreateTestimonyActivity : FaithGenActivity() {
         else encodeImages()
     }
 
+    /**
+     * This uploads the testimony to the server
+     */
     private fun uploadTestimony() {
         faithGenAPI
             .setParams(params as HashMap<String, String>)
@@ -102,6 +110,9 @@ final class CreateTestimonyActivity : FaithGenActivity() {
             .request(Constants.TESTIMONIES_URL)
     }
 
+    /**
+     * Open the user`s testimonies after a successful upload
+     */
     private fun openMyTestimonies() {
         val intent = Intent(this@CreateTestimonyActivity, UserTestimoniesActivity::class.java)
         intent.putExtra(Constants.USER_ID, SDK.getUser().id)
@@ -109,11 +120,17 @@ final class CreateTestimonyActivity : FaithGenActivity() {
         startActivity(intent)
     }
 
+    /**
+     * On exiting the page
+     */
     override fun onStop() {
         super.onStop()
         faithGenAPI.cancelRequests()
     }
 
+    /**
+     * Encodes the images into base64 for uploading
+     */
     private fun encodeImages() {
         EncodeImages(this@CreateTestimonyActivity, object : EncodeImages.EncodingListener {
             override fun onEncodeFinished(encodedImages: List<String>) {
@@ -123,6 +140,9 @@ final class CreateTestimonyActivity : FaithGenActivity() {
         }).execute(images)
     }
 
+    /**
+     * Displays the images chosen from the image picker
+     */
     private fun renderImages() {
         val adapter =
             TestimonyImagesAdapter(this, images, object : TestimonyImagesAdapter.ImageListener {
@@ -134,6 +154,9 @@ final class CreateTestimonyActivity : FaithGenActivity() {
         imagesList.adapter = adapter
     }
 
+    /**
+     * Receives images from the selector
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (ImagePicker.shouldHandle(requestCode, resultCode, data)) {
             images.addAll(ImagePicker.getImages(data))
