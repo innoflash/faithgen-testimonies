@@ -7,9 +7,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_testimony.*
 import net.faithgen.sdk.FaithGenActivity
+import net.faithgen.sdk.SDK
 import net.faithgen.sdk.http.ErrorResponse
 import net.faithgen.sdk.http.FaithGenAPI
 import net.faithgen.sdk.http.types.ServerResponse
+import net.faithgen.sdk.menu.Menu
+import net.faithgen.sdk.menu.MenuFactory
+import net.faithgen.sdk.menu.MenuItem
 import net.faithgen.sdk.singletons.GSONSingleton
 import net.faithgen.sdk.utils.Dialogs
 import net.faithgen.sdk.utils.Utils
@@ -36,6 +40,8 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_testimony)
+
+        initMenu()
     }
 
     override fun onStart() {
@@ -47,6 +53,23 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
     override fun onStop() {
         super.onStop()
         faithGenAPI.cancelRequests()
+    }
+
+    private fun initMenu() {
+        val menuItems: MutableList<MenuItem> = mutableListOf()
+        menuItems.add(MenuItem(R.drawable.ic_share_24, Constants.SHARE))
+        val menu: Menu = MenuFactory.initializeMenu(this, menuItems)
+        menu.setOnMenuItemListener(Constants.TESTIMONY_OPTIONS) { menuItem, position ->
+            when (position) {
+                0 -> Utils.shareText(
+                    this@TestimonyActivity,
+                    "${testimony?.user?.name}`s testimony\n${testimony?.date?.formatted}\n\n${testimony?.testimony}\n\nCourtesy of ${SDK.getMinistry().name}",
+                    "${testimony?.user?.name}`s testimony"
+                )
+                1 -> {
+                }
+            }
+        }
     }
 
     private fun fetchTestimony() {
@@ -89,7 +112,7 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
             )
         }
 
-        if(testimony?.images?.size === 0)
+        if (testimony?.images?.size === 0)
             tImages.visibility = View.GONE
         val adapter = ImagesAdapter(this@TestimonyActivity, testimony!!.images)
         testimonyImages.layoutManager = GridLayoutManager(this@TestimonyActivity, 2)
