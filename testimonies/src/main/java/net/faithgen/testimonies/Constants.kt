@@ -22,4 +22,8 @@ object Constants {
     const val IMAGES = "images"
     const val IMAGE_ID = "image_id"
     const val SLIDERS_TAG = "sliders_tagx"
+    const val CREATE_TESTIMONY = "CREATE TESTIMONY"
+    const val MY_TESTIMONIES = "MY TESTIMONIES"
+    const val SEARCH = "SEARCH"
+    const val NOT_LOGGED_IN = "You need to login first to be able to use this part"
 }

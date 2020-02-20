@@ -41,7 +41,7 @@ class ViewUtil(val context: Context, private val view: View) : RecyclerViewClick
         view.findViewById<SwipeRefreshLayout>(R.id.swipeRefresh)
     }
 
-    private val testimoniesView: RecyclerView by lazy {
+    val testimoniesView: RecyclerView by lazy {
         view.findViewById<RecyclerView>(R.id.testimoniesView)
     }
 
