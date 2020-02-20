@@ -35,6 +35,7 @@ class ImagesSliderDialog(
 
     private var sliderView: SliderView? = null
     private val faithGenAPI: FaithGenAPI by lazy { FaithGenAPI(context) }
+    private var errorListener: ErrorListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,6 +49,10 @@ class ImagesSliderDialog(
         dialogToolbar.dialogFragment = this
         dialogToolbar.title = testimony.title
         return view
+    }
+
+    fun setErrorListener(errorListener: ErrorListener) {
+        this.errorListener = errorListener
     }
 
     override fun onStop() {
@@ -78,29 +83,39 @@ class ImagesSliderDialog(
                     params.put(Constants.TESTIMONY_ID, testimony.id)
                     params.put(Constants.IMAGE_ID, image.id)
 
-                    Dialogs.confirmDialog(context, Constants.WARNING, Constants.CONFIRM_IMAGE_DELETE, object : DialogListener() {
-                        override fun onYes() {
-                            faithGenAPI.setParams(params)
-                                .setMethod(Request.Method.POST)
-                                .setServerResponse(object : ServerResponse() {
-                                    override fun onServerResponse(serverResponse: String?) {
-                                        val response: Response<*> = GSONSingleton.instance.gson.fromJson(
-                                            serverResponse,
-                                            Response::class.java
-                                        )
-                                        if (response.isSuccess) {
-                                            dismiss()
-                                            Dialogs.showOkDialog(context, response.message, true)
+                    Dialogs.confirmDialog(
+                        context,
+                        Constants.WARNING,
+                        Constants.CONFIRM_IMAGE_DELETE,
+                        object : DialogListener() {
+                            override fun onYes() {
+                                faithGenAPI.setParams(params)
+                                    .setMethod(Request.Method.POST)
+                                    .setServerResponse(object : ServerResponse() {
+                                        override fun onServerResponse(serverResponse: String?) {
+                                            val response: Response<*> =
+                                                GSONSingleton.instance.gson.fromJson(
+                                                    serverResponse,
+                                                    Response::class.java
+                                                )
+                                            if (response.success) {
+                                                dismiss()
+                                                if (errorListener !== null)
+                                                    errorListener!!.onMessage(
+                                                        response.message,
+                                                        true
+                                                    )
+                                            }
                                         }
-                                    }
 
-                                    override fun onError(errorResponse: ErrorResponse?) {
-                                        Dialogs.showOkDialog(context, errorResponse?.message, false)
-                                    }
-                                })
-                                .request("${Constants.TESTIMONIES_URL}/delete-image")
-                        }
-                    })
+                                        override fun onError(errorResponse: ErrorResponse?) {
+                                            if (errorListener !== null)
+                                                errorListener!!.onMessage(errorResponse!!.message)
+                                        }
+                                    })
+                                    .request("${Constants.TESTIMONIES_URL}/delete-image")
+                            }
+                        })
                 }
             })
         sliderView!!.setSliderAdapter(sliderAdapter)
@@ -108,5 +123,9 @@ class ImagesSliderDialog(
         sliderView!!.setSliderTransformAnimation(SliderAnimations.values()[animationPosition])
 
         sliderView!!.currentPagePosition = position
+    }
+
+    public interface ErrorListener {
+        fun onMessage(message: String, closeActivity: Boolean = false)
     }
 }

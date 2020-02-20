@@ -122,8 +122,8 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
             .setServerResponse(object : ServerResponse() {
                 override fun onServerResponse(serverResponse: String?) {
                     val response : Response<*>? = GSONSingleton.instance.gson.fromJson(serverResponse, Response::class.java)
-                    if(response!!.isSuccess)
-                        Dialogs.showOkDialog(this@TestimonyActivity, response?.message, true)
+                    if(response!!.success)
+                        Dialogs.showOkDialog(this@TestimonyActivity, response.message, true)
                 }
 
                 override fun onError(errorResponse: ErrorResponse?) {
@@ -196,6 +196,11 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
             ImagesSliderDialog(testimony!!, position, this)
         }
         imagesSliderDialog.show(supportFragmentManager, Constants.SLIDERS_TAG)
+        imagesSliderDialog.setErrorListener(object : ImagesSliderDialog.ErrorListener {
+            override fun onMessage(message: String, closeActivity: Boolean) {
+                Dialogs.showOkDialog(this@TestimonyActivity, message, closeActivity)
+            }
+        })
     }
 
     override fun onLongClick(view: View?, position: Int) {
