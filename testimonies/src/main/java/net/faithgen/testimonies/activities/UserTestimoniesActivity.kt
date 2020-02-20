@@ -9,6 +9,9 @@ import net.faithgen.testimonies.Constants
 import net.faithgen.testimonies.R
 import net.faithgen.testimonies.ViewUtil
 
+/**
+ * This loads testimonies for a specified user
+ */
 class UserTestimoniesActivity : FaithGenActivity() {
     private var viewUtil: ViewUtil? = null
 
@@ -38,6 +41,9 @@ class UserTestimoniesActivity : FaithGenActivity() {
             }
     }
 
+    /**
+     * Fetching the sermon takes place here
+     */
     override fun onStart() {
         super.onStart()
         if (viewUtil!!.testimonies.size === 0)
