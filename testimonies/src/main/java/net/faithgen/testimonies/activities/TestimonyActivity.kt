@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
+import com.android.volley.Request
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_testimony.*
 import net.faithgen.sdk.FaithGenActivity
@@ -11,7 +12,9 @@ import net.faithgen.sdk.SDK
 import net.faithgen.sdk.comments.CommentsSettings
 import net.faithgen.sdk.http.ErrorResponse
 import net.faithgen.sdk.http.FaithGenAPI
+import net.faithgen.sdk.http.Response
 import net.faithgen.sdk.http.types.ServerResponse
+import net.faithgen.sdk.interfaces.DialogListener
 import net.faithgen.sdk.menu.Menu
 import net.faithgen.sdk.menu.MenuFactory
 import net.faithgen.sdk.menu.MenuItem
@@ -57,8 +60,11 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
     }
 
     private fun initMenu() {
-        val moreTestimonies : String by lazy {
-            if(SDK.getUser() === null || !SDK.getUser().id.equals(testimony?.user?.id))
+        val belongsToMe: Boolean by lazy {
+            SDK.getUser() !== null && SDK.getUser().id.equals(testimony?.user?.id)
+        }
+        val moreTestimonies: String by lazy {
+            if (!belongsToMe)
                 Constants.THEIR_TESTIMONIES
             else Constants.YOUR_TESTIMONIES
         }
@@ -66,6 +72,10 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
         menuItems.add(MenuItem(R.drawable.ic_share_24, Constants.SHARE))
         menuItems.add(MenuItem(R.drawable.ic_comments_24, Constants.COMMENTS))
         menuItems.add(MenuItem(R.drawable.ic_testimonies_24, moreTestimonies))
+        if (belongsToMe) {
+            menuItems.add(MenuItem(R.drawable.ic_pencil_24, Constants.EDIT))
+            menuItems.add(MenuItem(R.drawable.ic_trash_24, Constants.DELETE))
+        }
         menuItems.add(MenuItem(R.drawable.ic_back_24, Constants.EXIT))
 
         val menu: Menu = MenuFactory.initializeMenu(this, menuItems)
@@ -89,10 +99,41 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
                     intent.putExtra(Constants.USER_NAME, testimony?.user?.name)
                     startActivity(intent)
                 }
-                3 -> finish()
+                3 -> {
+                    if (belongsToMe) openUpdateTestimony()
+                    else finish()
+                }
+                4 -> Dialogs.confirmDialog(this@TestimonyActivity, Constants.WARNING, Constants.CONFIRM_DELETE, object : DialogListener() {
+                    override fun onYes() {
+                        deleteTestimony()
+                    }
+                })
+                5 -> finish()
             }
         }
         setOnOptionsClicked { menu.show() }
+    }
+
+    private fun deleteTestimony(){
+        faithGenAPI.setMethod(Request.Method.DELETE)
+            .setParams(null)
+            .setFinishOnFail(true)
+            .setServerResponse(object : ServerResponse() {
+                override fun onServerResponse(serverResponse: String?) {
+                    val response : Response<*>? = GSONSingleton.instance.gson.fromJson(serverResponse, Response::class.java)
+                    if(response!!.isSuccess)
+                        Dialogs.showOkDialog(this@TestimonyActivity, response?.message, true)
+                }
+
+                override fun onError(errorResponse: ErrorResponse?) {
+                    Dialogs.showOkDialog(this@TestimonyActivity, errorResponse?.message, false)
+                }
+            })
+            .request("${Constants.TESTIMONIES_URL}/$testimony_id")
+    }
+
+    private fun openUpdateTestimony() {
+
     }
 
     private fun fetchTestimony() {
