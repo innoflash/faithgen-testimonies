@@ -10,7 +10,12 @@ import net.faithgen.testimonies.Constants
 import java.io.File
 import java.util.*
 
-final class EncodeImages(val context: Context, val encodingListener: EncodingListener?) :
+/**
+ * This encodes images to base64 images
+ *
+ * Takes in a list of images and encode
+ */
+final class EncodeImages(private val context: Context, private val encodingListener: EncodingListener?) :
     AsyncTask<List<Image>, Int, List<String>>() {
     private val encodedImages: MutableList<String> = mutableListOf()
 
