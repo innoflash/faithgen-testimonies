@@ -4,12 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.UserTestimoniesActivity">
-
-    <include
-        android:id="@+id/testimoniesLayout"
-        layout="@layout/testimonies_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    tools:context=".activities.CreateTestimonyActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>
