@@ -6,5 +6,6 @@ object Constants {
     const val FILTER_TEXT = "filter_text"
     const val TESTIMONY_ID = "testimony_id"
     const val SHARE = "Share"
+    const val COMMENTS = "Comments"
     const val TESTIMONY_OPTIONS = "Testimony options"
 }

@@ -8,6 +8,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_testimony.*
 import net.faithgen.sdk.FaithGenActivity
 import net.faithgen.sdk.SDK
+import net.faithgen.sdk.comments.CommentsSettings
 import net.faithgen.sdk.http.ErrorResponse
 import net.faithgen.sdk.http.FaithGenAPI
 import net.faithgen.sdk.http.types.ServerResponse
@@ -58,6 +59,8 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
     private fun initMenu() {
         val menuItems: MutableList<MenuItem> = mutableListOf()
         menuItems.add(MenuItem(R.drawable.ic_share_24, Constants.SHARE))
+        menuItems.add(MenuItem(R.drawable.ic_comments_24, Constants.COMMENTS))
+
         val menu: Menu = MenuFactory.initializeMenu(this, menuItems)
         menu.setOnMenuItemListener(Constants.TESTIMONY_OPTIONS) { menuItem, position ->
             when (position) {
@@ -66,10 +69,16 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
                     "${testimony?.user?.name}`s testimony\n${testimony?.date?.formatted}\n\n${testimony?.testimony}\n\nCourtesy of ${SDK.getMinistry().name}",
                     "${testimony?.user?.name}`s testimony"
                 )
-                1 -> {
-                }
+                1 -> SDK.openComments(
+                    this@TestimonyActivity, CommentsSettings.Builder()
+                        .setCategory(Constants.TESTIMONIES_URL)
+                        .setItemId(testimony_id)
+                        .setTitle(testimony?.title)
+                        .build()
+                )
             }
         }
+        setOnOptionsClicked { menu.show() }
     }
 
     private fun fetchTestimony() {
