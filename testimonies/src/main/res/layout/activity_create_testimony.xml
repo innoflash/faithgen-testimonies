@@ -33,6 +33,7 @@
             android:text="@string/testimony" />
 
         <EditText
+            android:id="@+id/testimonyBody"
             style="@style/helvetica_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

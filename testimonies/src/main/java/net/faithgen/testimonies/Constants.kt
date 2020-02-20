@@ -16,7 +16,7 @@ object Constants {
     const val TESTIMONY_OPTIONS = "Testimony options"
     const val CONFIRM_DELETE = "You want to delete this testimony?"
     const val CONFIRM_IMAGE_DELETE = "You want to delete this image?"
-    const val TESTIMONY = "testimony_"
+    const val TESTIMONY = "testimony"
     const val USER_ID = "user_id"
     const val USER_NAME = "user_name"
     const val SHARE = "Share"
@@ -38,4 +38,7 @@ object Constants {
     const val TAP_TO_SELECT = "Tap to select"
     const val IMAGES_FULL =
         "You have selected the maximum number of images for this testimony, consider removing some if you need new ones"
+    const val TITLE = "title"
+    const val RESOURCE = "resource"
+    const val ENCODING_IMAGES = "Encoding images..."
 }

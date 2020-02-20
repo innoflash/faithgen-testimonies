@@ -1,24 +1,25 @@
 package net.faithgen.testimonies.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.esafirm.imagepicker.features.ImagePicker
-import com.esafirm.imagepicker.features.ReturnMode
 import com.esafirm.imagepicker.model.Image
 import kotlinx.android.synthetic.main.activity_create_testimony.*
 import net.faithgen.sdk.FaithGenActivity
 import net.faithgen.sdk.SDK
+import net.faithgen.sdk.singletons.GSONSingleton
 import net.faithgen.sdk.utils.Dialogs
 import net.faithgen.testimonies.Constants
 import net.faithgen.testimonies.R
 import net.faithgen.testimonies.adapters.TestimonyImagesAdapter
+import net.faithgen.testimonies.tasks.EncodeImages
 import java.util.ArrayList
 
 final class CreateTestimonyActivity : FaithGenActivity() {
     private val images: MutableList<Image> = mutableListOf()
+    private val params: MutableMap<String, String> = mutableMapOf()
     private var imagesLeft: Int = 0
     private val imageMaxs: HashMap<String, Int> = hashMapOf(
         Pair(Constants.PREMIUM, Constants.Numbers.PREMIUM_MAX),
@@ -56,15 +57,40 @@ final class CreateTestimonyActivity : FaithGenActivity() {
         }
 
         imagesList.layoutManager = GridLayoutManager(this, 2)
+        createTestimony.setOnClickListener { prepareTestimony() }
+    }
+
+    private fun prepareTestimony() {
+        params.put(Constants.TITLE, testimonyTitle.value)
+        params.put(Constants.TESTIMONY, testimonyBody.text.toString())
+        if (testimonyLink.value.isNotEmpty())
+            params.put(Constants.RESOURCE, testimonyLink.value)
+        if (images.size === 0)
+            uploadTestimony()
+        else encodeImages()
+    }
+
+    private fun uploadTestimony() {
+
+    }
+
+    private fun encodeImages() {
+        EncodeImages(this@CreateTestimonyActivity, object : EncodeImages.EncodingListener {
+            override fun onEncodeFinished(encodedImages: List<String>) {
+                params.put(Constants.IMAGES, GSONSingleton.instance.gson.toJson(encodedImages))
+                uploadTestimony()
+            }
+        }).execute(images)
     }
 
     private fun renderImages() {
-        val adapter = TestimonyImagesAdapter(this, images, object : TestimonyImagesAdapter.ImageListener {
-            override fun onRemoved(position: Int, image: Image) {
-                images.removeAt(position)
-                renderImages()
-            }
-        })
+        val adapter =
+            TestimonyImagesAdapter(this, images, object : TestimonyImagesAdapter.ImageListener {
+                override fun onRemoved(position: Int, image: Image) {
+                    images.removeAt(position)
+                    renderImages()
+                }
+            })
         imagesList.adapter = adapter
     }
 
