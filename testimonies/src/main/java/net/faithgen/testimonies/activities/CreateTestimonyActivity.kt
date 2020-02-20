@@ -4,11 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
+import com.android.volley.Request
 import com.esafirm.imagepicker.features.ImagePicker
 import com.esafirm.imagepicker.model.Image
 import kotlinx.android.synthetic.main.activity_create_testimony.*
 import net.faithgen.sdk.FaithGenActivity
 import net.faithgen.sdk.SDK
+import net.faithgen.sdk.http.ErrorResponse
+import net.faithgen.sdk.http.FaithGenAPI
+import net.faithgen.sdk.http.Response
+import net.faithgen.sdk.http.types.ServerResponse
 import net.faithgen.sdk.singletons.GSONSingleton
 import net.faithgen.sdk.utils.Dialogs
 import net.faithgen.testimonies.Constants
@@ -21,11 +26,14 @@ final class CreateTestimonyActivity : FaithGenActivity() {
     private val images: MutableList<Image> = mutableListOf()
     private val params: MutableMap<String, String> = mutableMapOf()
     private var imagesLeft: Int = 0
+
     private val imageMaxs: HashMap<String, Int> = hashMapOf(
         Pair(Constants.PREMIUM, Constants.Numbers.PREMIUM_MAX),
         Pair(Constants.PREMIUM_PLUS, Constants.Numbers.PREMIUM_PLUS_MAX),
         Pair(Constants.FREE, Constants.Numbers.FREE_MAX)
     )
+
+    private val faithGenAPI: FaithGenAPI by lazy { FaithGenAPI(this) }
 
     private val maxImages: Int by lazy { imageMaxs.get(SDK.getMinistry().account)!! }
 
@@ -71,7 +79,39 @@ final class CreateTestimonyActivity : FaithGenActivity() {
     }
 
     private fun uploadTestimony() {
+        faithGenAPI
+            .setParams(params as HashMap<String, String>)
+            .setMethod(Request.Method.POST)
+            .setServerResponse(object : ServerResponse() {
+                override fun onServerResponse(serverResponse: String?) {
+                    val response: Response<*> =
+                        GSONSingleton.instance.gson.fromJson(serverResponse, Response::class.java)
+                    Dialogs.showOkDialog(this@CreateTestimonyActivity, response.message, false)
+                    if (response.success)
+                        openMyTestimonies()
+                }
 
+                override fun onError(errorResponse: ErrorResponse?) {
+                    Dialogs.showOkDialog(
+                        this@CreateTestimonyActivity,
+                        errorResponse?.message,
+                        false
+                    )
+                }
+            })
+            .request(Constants.TESTIMONIES_URL)
+    }
+
+    private fun openMyTestimonies() {
+        val intent = Intent(this@CreateTestimonyActivity, UserTestimoniesActivity::class.java)
+        intent.putExtra(Constants.USER_ID, SDK.getUser().id)
+        intent.putExtra(Constants.USER_NAME, Constants.YOUR_TESTIMONIES)
+        startActivity(intent)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        faithGenAPI.cancelRequests()
     }
 
     private fun encodeImages() {
