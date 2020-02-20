@@ -20,7 +20,12 @@ import net.innoflash.iosview.recyclerview.RecyclerTouchListener
 import net.innoflash.iosview.recyclerview.RecyclerViewClickListener
 import net.innoflash.iosview.swipelib.SwipeRefreshLayout
 
-class ViewUtil(val context: Context, private val view: View) : RecyclerViewClickListener,
+/**
+ * This util is used to :
+ * Fetch testimonies
+ * Render testimonies
+ */
+final class ViewUtil(val context: Context, private val view: View) : RecyclerViewClickListener,
     SwipeRefreshLayout.OnRefreshListener {
 
     private var filterText: String? = null
@@ -45,6 +50,9 @@ class ViewUtil(val context: Context, private val view: View) : RecyclerViewClick
         view.findViewById<RecyclerView>(R.id.testimoniesView)
     }
 
+    /**
+     * Gives the recyclerview and swipe refresh their callbacks
+     */
     fun initViewsCallbacks() {
         testimoniesView.layoutManager = LinearLayoutManager(context)
         testimoniesView.addOnItemTouchListener(
@@ -60,6 +68,14 @@ class ViewUtil(val context: Context, private val view: View) : RecyclerViewClick
         swipeRefresh.setPullPosition(Gravity.BOTTOM)
     }
 
+    /**
+     * This fetches the testimonies from the server
+     *
+     * @param url The url to fetch the testimonies
+     * @param filterText The text to use on search
+     * @param reload This decides whether or not you should reload recyclerview or append to
+     * current data
+     */
     fun loadTestimonies(url: String, filterText: String, reload: Boolean) {
         this.filterText = filterText
         if (filterText.length !== 0) {
@@ -107,6 +123,10 @@ class ViewUtil(val context: Context, private val view: View) : RecyclerViewClick
             .request(url)
     }
 
+    /**
+     * Handles testimony clicks
+     * Opens the testimony to full details
+     */
     override fun onClick(view: View?, position: Int) {
         val intent = Intent(context, TestimonyActivity::class.java)
         intent.putExtra(Constants.TESTIMONY_ID, testimonies.get(position).id)
@@ -117,6 +137,11 @@ class ViewUtil(val context: Context, private val view: View) : RecyclerViewClick
         //do nothing
     }
 
+    /**
+     * The swipe refresh callback
+     *
+     * Loads more testimonies when paginated
+     */
     override fun onRefresh() {
         if (pagination === null || pagination?.links?.next === null)
             swipeRefresh.isRefreshing = false

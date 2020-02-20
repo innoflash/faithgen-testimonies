@@ -1,5 +1,8 @@
 package net.faithgen.testimonies
 
+/**
+ * Holds the constant strings and numbers used in the library
+ */
 object Constants {
     object Numbers {
         const val PREMIUM_MAX = 5
