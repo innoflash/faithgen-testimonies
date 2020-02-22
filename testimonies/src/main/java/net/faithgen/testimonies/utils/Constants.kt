@@ -8,8 +8,10 @@ object Constants {
         const val PREMIUM_MAX = 5
         const val PREMIUM_PLUS_MAX = 10
         const val FREE_MAX = 0
+        const val UPDATE_REQUEST = 12345
     }
 
+    const val SHOULD_REFRESH = "should_refresh"
     const val TESTIMONIES = "Testimonies"
     const val TESTIMONIES_URL = "testimonies"
     const val FILTER_TEXT = "filter_text"

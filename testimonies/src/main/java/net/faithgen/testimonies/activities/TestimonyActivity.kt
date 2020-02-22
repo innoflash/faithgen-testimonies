@@ -1,8 +1,10 @@
 package net.faithgen.testimonies.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.android.volley.Request
 import com.squareup.picasso.Picasso
@@ -161,7 +163,7 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
         val intent = Intent(this, UpdateTestimonyActivity::class.java)
         intent.putExtra(Constants.TESTIMONY_ID, testimonyId)
         intent.putExtra(Constants.TESTIMONY, stringifiedTestimony)
-        startActivity(intent)
+        startActivityForResult(intent, Constants.Numbers.UPDATE_REQUEST)
     }
 
     /**
@@ -248,5 +250,13 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
 
     override fun onLongClick(view: View?, position: Int) {
         //leave as is
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK){
+            val shouldRefresh : Boolean = data?.getBooleanExtra(Constants.SHOULD_REFRESH, false)!!
+            if(shouldRefresh) fetchTestimony()
+        }
     }
 }

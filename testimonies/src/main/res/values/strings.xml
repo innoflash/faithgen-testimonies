@@ -17,4 +17,5 @@
     <string name="approval_pending">Approval Pending</string>
     <string name="testimony_approved">Testimony Approved</string>
     <string name="update_testimony">Update Testimony</string>
+    <string name="testimony_details">Testimony Details</string>
 </resources>
