@@ -1,4 +1,4 @@
-package net.faithgen.testimonies
+package net.faithgen.testimonies.utils
 
 /**
  * Holds the constant strings and numbers used in the library
@@ -44,4 +44,9 @@ object Constants {
     const val TITLE = "title"
     const val RESOURCE = "resource"
     const val ENCODING_IMAGES = "Encoding images..."
+    const val CREATING_TESTIMONIES = "Creating testimony"
+    const val FETCHING_TESTIMONIES = "Fetching testimonies"
+    const val DELETING_IMAGE = "Deleting image..."
+    const val UPDATING_TESTIMONY = "Updating testimony..."
+    const val FETCHING_TESTIMONY = "Opening testimony..."
 }

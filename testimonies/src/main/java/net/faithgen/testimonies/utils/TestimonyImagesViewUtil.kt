@@ -12,7 +12,6 @@ import com.esafirm.imagepicker.features.ImagePicker
 import com.esafirm.imagepicker.model.Image
 import net.faithgen.sdk.SDK
 import net.faithgen.sdk.utils.Dialogs
-import net.faithgen.testimonies.Constants
 import net.faithgen.testimonies.R
 import net.faithgen.testimonies.adapters.TestimonyImagesAdapter
 import java.util.ArrayList

@@ -2,11 +2,8 @@ package net.faithgen.testimonies.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import androidx.recyclerview.widget.GridLayoutManager
 import com.android.volley.Request
 import com.esafirm.imagepicker.features.ImagePicker
-import com.esafirm.imagepicker.model.Image
 import kotlinx.android.synthetic.main.activity_create_testimony.*
 import net.faithgen.sdk.FaithGenActivity
 import net.faithgen.sdk.SDK
@@ -16,13 +13,11 @@ import net.faithgen.sdk.http.Response
 import net.faithgen.sdk.http.types.ServerResponse
 import net.faithgen.sdk.singletons.GSONSingleton
 import net.faithgen.sdk.utils.Dialogs
-import net.faithgen.testimonies.Constants
+import net.faithgen.testimonies.utils.Constants
 import net.faithgen.testimonies.R
-import net.faithgen.testimonies.adapters.TestimonyImagesAdapter
 import net.faithgen.testimonies.tasks.EncodeImages
 import net.faithgen.testimonies.utils.TestimonyCRUDViewUtil
 import net.faithgen.testimonies.utils.TestimonyImagesViewUtil
-import java.util.ArrayList
 
 /**
  * The activity to create a testimony
@@ -76,6 +71,7 @@ final class CreateTestimonyActivity : FaithGenActivity() {
         faithGenAPI
             .setParams(crudViewUtil?.getParams() as HashMap<String, String>)
             .setMethod(Request.Method.POST)
+            .setProcess(Constants.CREATING_TESTIMONIES)
             .setServerResponse(object : ServerResponse() {
                 override fun onServerResponse(serverResponse: String?) {
                     val response: Response<*> =

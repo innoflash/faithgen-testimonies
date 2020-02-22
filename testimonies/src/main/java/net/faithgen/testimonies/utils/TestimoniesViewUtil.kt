@@ -12,7 +12,6 @@ import net.faithgen.sdk.http.FaithGenAPI
 import net.faithgen.sdk.http.Pagination
 import net.faithgen.sdk.http.types.ServerResponse
 import net.faithgen.sdk.singletons.GSONSingleton
-import net.faithgen.testimonies.Constants
 import net.faithgen.testimonies.R
 import net.faithgen.testimonies.activities.TestimonyActivity
 import net.faithgen.testimonies.adapters.LI3Adapter
@@ -27,7 +26,8 @@ import net.innoflash.iosview.swipelib.SwipeRefreshLayout
  * Fetch testimonies
  * Render testimonies
  */
-final class TestimoniesViewUtil(val context: Context, private val view: View) : RecyclerViewClickListener,
+final class TestimoniesViewUtil(val context: Context, private val view: View) :
+    RecyclerViewClickListener,
     SwipeRefreshLayout.OnRefreshListener {
 
     private var filterText: String? = null
@@ -86,6 +86,7 @@ final class TestimoniesViewUtil(val context: Context, private val view: View) : 
         } else params = null
 
         faithGenAPI.setParams(params)
+            .setProcess(Constants.FETCHING_TESTIMONIES)
             .setServerResponse(object : ServerResponse() {
                 override fun onServerResponse(serverResponse: String?) {
                     val testimoniesResponse = GSONSingleton.instance.gson.fromJson(
@@ -117,8 +118,6 @@ final class TestimoniesViewUtil(val context: Context, private val view: View) : 
                 }
 
                 override fun onError(errorResponse: ErrorResponse?) {
-                    //super.onError(errorResponse)
-                    //  Dialogs.showOkDialog(context, errorResponse?.message, pagination === null)
                     noTestimonies.text = errorResponse?.message
                 }
             })

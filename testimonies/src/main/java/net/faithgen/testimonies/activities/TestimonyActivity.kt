@@ -21,7 +21,7 @@ import net.faithgen.sdk.menu.MenuItem
 import net.faithgen.sdk.singletons.GSONSingleton
 import net.faithgen.sdk.utils.Dialogs
 import net.faithgen.sdk.utils.Utils
-import net.faithgen.testimonies.Constants
+import net.faithgen.testimonies.utils.Constants
 import net.faithgen.testimonies.R
 import net.faithgen.testimonies.adapters.ImagesAdapter
 import net.faithgen.testimonies.dialogs.ImagesSliderDialog
@@ -34,13 +34,13 @@ import net.innoflash.iosview.recyclerview.RecyclerViewClickListener
  */
 class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
     private var testimony: Testimony? = null
-    private var belongsToMe : Boolean = false
+    private var belongsToMe: Boolean = false
 
     private val faithGenAPI: FaithGenAPI by lazy {
         FaithGenAPI(this)
     }
 
-    private val testimony_id: String by lazy {
+    private val testimonyId: String by lazy {
         intent.getStringExtra(Constants.TESTIMONY_ID)
     }
 
@@ -96,7 +96,7 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
                 1 -> SDK.openComments(
                     this@TestimonyActivity, CommentsSettings.Builder()
                         .setCategory(Constants.TESTIMONIES_URL)
-                        .setItemId(testimony_id)
+                        .setItemId(testimonyId)
                         .setTitle(testimony?.title)
                         .build()
                 )
@@ -110,11 +110,15 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
                     if (belongsToMe) openUpdateTestimony()
                     else finish()
                 }
-                4 -> Dialogs.confirmDialog(this@TestimonyActivity, Constants.WARNING, Constants.CONFIRM_DELETE, object : DialogListener() {
-                    override fun onYes() {
-                        deleteTestimony()
-                    }
-                })
+                4 -> Dialogs.confirmDialog(
+                    this@TestimonyActivity,
+                    Constants.WARNING,
+                    Constants.CONFIRM_DELETE,
+                    object : DialogListener() {
+                        override fun onYes() {
+                            deleteTestimony()
+                        }
+                    })
                 5 -> finish()
             }
         }
@@ -126,14 +130,16 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
      *
      * If it gets deleted the activity finishes
      */
-    private fun deleteTestimony(){
+    private fun deleteTestimony() {
         faithGenAPI.setMethod(Request.Method.DELETE)
             .setParams(null)
             .setFinishOnFail(true)
+            .setProcess(Constants.DELETING_IMAGE)
             .setServerResponse(object : ServerResponse() {
                 override fun onServerResponse(serverResponse: String?) {
-                    val response : Response<*>? = GSONSingleton.instance.gson.fromJson(serverResponse, Response::class.java)
-                    if(response!!.success)
+                    val response: Response<*>? =
+                        GSONSingleton.instance.gson.fromJson(serverResponse, Response::class.java)
+                    if (response!!.success)
                         Dialogs.showOkDialog(this@TestimonyActivity, response.message, true)
                 }
 
@@ -141,7 +147,7 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
                     Dialogs.showOkDialog(this@TestimonyActivity, errorResponse?.message, false)
                 }
             })
-            .request("${Constants.TESTIMONIES_URL}/$testimony_id")
+            .request("${Constants.TESTIMONIES_URL}/$testimonyId")
     }
 
     /**
@@ -149,11 +155,11 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
      * and open the update activity
      */
     private fun openUpdateTestimony() {
-        val stringifiedTestimony : String by lazy {
+        val stringifiedTestimony: String by lazy {
             GSONSingleton.instance.gson.toJson(testimony)
         }
         val intent = Intent(this, UpdateTestimonyActivity::class.java)
-        intent.putExtra(Constants.TESTIMONY_ID, testimony_id)
+        intent.putExtra(Constants.TESTIMONY_ID, testimonyId)
         intent.putExtra(Constants.TESTIMONY, stringifiedTestimony)
         startActivity(intent)
     }
@@ -165,6 +171,7 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
     private fun fetchTestimony() {
         faithGenAPI.setParams(null)
             .setFinishOnFail(true)
+            .setProcess(Constants.FETCHING_TESTIMONY)
             .setServerResponse(object : ServerResponse() {
                 override fun onServerResponse(serverResponse: String?) {
                     testimony = GSONSingleton.instance.gson
@@ -176,7 +183,7 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
                     Dialogs.showOkDialog(this@TestimonyActivity, errorResponse?.message, true)
                 }
             })
-            .request("${Constants.TESTIMONIES_URL}/$testimony_id")
+            .request("${Constants.TESTIMONIES_URL}/$testimonyId")
     }
 
     /**
@@ -209,10 +216,10 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
             )
         }
 
-        if(belongsToMe && testimony!!.approved)
+        if (belongsToMe && testimony!!.approved)
             approvedTestimony.visibility = View.VISIBLE
 
-        if(belongsToMe && !testimony!!.approved)
+        if (belongsToMe && !testimony!!.approved)
             pendingTestimony.visibility = View.VISIBLE
 
         if (testimony?.images?.size === 0)

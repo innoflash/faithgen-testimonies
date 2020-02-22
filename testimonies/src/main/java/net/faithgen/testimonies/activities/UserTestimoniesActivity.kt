@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import net.faithgen.sdk.FaithGenActivity
 import net.faithgen.sdk.SDK
-import net.faithgen.testimonies.Constants
+import net.faithgen.testimonies.utils.Constants
 import net.faithgen.testimonies.R
 import net.faithgen.testimonies.utils.TestimoniesViewUtil
 

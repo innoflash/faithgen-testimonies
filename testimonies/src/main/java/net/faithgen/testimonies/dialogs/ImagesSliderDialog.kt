@@ -19,7 +19,7 @@ import net.faithgen.sdk.http.types.ServerResponse
 import net.faithgen.sdk.interfaces.DialogListener
 import net.faithgen.sdk.singletons.GSONSingleton
 import net.faithgen.sdk.utils.Dialogs
-import net.faithgen.testimonies.Constants
+import net.faithgen.testimonies.utils.Constants
 import net.faithgen.testimonies.R
 import net.faithgen.testimonies.adapters.ImagesSliderAdapter
 import net.faithgen.testimonies.models.Image

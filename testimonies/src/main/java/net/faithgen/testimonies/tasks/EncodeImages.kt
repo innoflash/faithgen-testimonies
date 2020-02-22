@@ -6,7 +6,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.esafirm.imagepicker.model.Image
 import net.faithgen.sdk.utils.Progress
-import net.faithgen.testimonies.Constants
+import net.faithgen.testimonies.utils.Constants
 import java.io.File
 import java.util.*
 

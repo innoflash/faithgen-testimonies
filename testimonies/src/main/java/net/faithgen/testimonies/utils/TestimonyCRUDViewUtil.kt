@@ -3,7 +3,6 @@ package net.faithgen.testimonies.utils
 import android.view.View
 import android.widget.EditText
 import net.faithgen.sdk.SDK
-import net.faithgen.testimonies.Constants
 import net.faithgen.testimonies.R
 import net.faithgen.testimonies.models.Testimony
 import net.innoflash.iosview.InputField
