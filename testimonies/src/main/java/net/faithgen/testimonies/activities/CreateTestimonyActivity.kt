@@ -21,26 +21,27 @@ import net.faithgen.testimonies.R
 import net.faithgen.testimonies.adapters.TestimonyImagesAdapter
 import net.faithgen.testimonies.tasks.EncodeImages
 import net.faithgen.testimonies.utils.TestimonyCRUDViewUtil
+import net.faithgen.testimonies.utils.TestimonyImagesViewUtil
 import java.util.ArrayList
 
 /**
  * The activity to create a testimony
  */
 final class CreateTestimonyActivity : FaithGenActivity() {
-    private val images: MutableList<Image> = mutableListOf()
-    private var imagesLeft: Int = 0
 
+    /**
+     * Manipulate views and data from the basic parts of the
+     * testimony creating/updating
+     */
     private var crudViewUtil: TestimonyCRUDViewUtil? = null
 
-    private val imageMaxs: HashMap<String, Int> = hashMapOf(
-        Pair(Constants.PREMIUM, Constants.Numbers.PREMIUM_MAX),
-        Pair(Constants.PREMIUM_PLUS, Constants.Numbers.PREMIUM_PLUS_MAX),
-        Pair(Constants.FREE, Constants.Numbers.FREE_MAX)
-    )
+    /**
+     * Handles image picking
+     */
+    private var imagesViewUtil: TestimonyImagesViewUtil? = null
 
+    //handles API calls
     private val faithGenAPI: FaithGenAPI by lazy { FaithGenAPI(this) }
-
-    private val maxImages: Int by lazy { imageMaxs.get(SDK.getMinistry().account)!! }
 
     override fun getPageTitle() = Constants.CREATE_TESTIMONY
 
@@ -51,26 +52,9 @@ final class CreateTestimonyActivity : FaithGenActivity() {
         crudViewUtil = TestimonyCRUDViewUtil(view, null)
         crudViewUtil!!.initViews()
 
-        if (SDK.getMinistry().account == Constants.FREE) {
-            tImages.visibility = View.GONE
-            selectImages.visibility = View.GONE
-        }
-        tImages.text = "${tImages.text} ($maxImages max)"
-        selectImages.setOnClickListener {
-            imagesLeft = maxImages - images.size
-            if (imagesLeft === 0)
-                Dialogs.showOkDialog(this@CreateTestimonyActivity, Constants.IMAGES_FULL, false)
-            else
-                ImagePicker.create(this@CreateTestimonyActivity)
-                    .multi()
-                    .showCamera(false)
-                    .toolbarImageTitle(Constants.TAP_TO_SELECT)
-                    .limit(imagesLeft)
-                    .exclude(images as ArrayList<Image>?)
-                    .start()
-        }
+        imagesViewUtil = TestimonyImagesViewUtil(view, this@CreateTestimonyActivity)
+        imagesViewUtil!!.initViews()
 
-        imagesList.layoutManager = GridLayoutManager(this, 2)
         createTestimony.setOnClickListener { prepareTestimony() }
     }
 
@@ -80,7 +64,7 @@ final class CreateTestimonyActivity : FaithGenActivity() {
      * If testimony has images it will encode first before uploading
      */
     private fun prepareTestimony() {
-        if (images.size === 0)
+        if (imagesViewUtil!!.getImages().size === 0)
             uploadTestimony()
         else encodeImages()
     }
@@ -140,31 +124,15 @@ final class CreateTestimonyActivity : FaithGenActivity() {
                     .put(Constants.IMAGES, GSONSingleton.instance.gson.toJson(encodedImages))
                 uploadTestimony()
             }
-        }).execute(images)
-    }
-
-    /**
-     * Displays the images chosen from the image picker
-     */
-    private fun renderImages() {
-        val adapter =
-            TestimonyImagesAdapter(this, images, object : TestimonyImagesAdapter.ImageListener {
-                override fun onRemoved(position: Int, image: Image) {
-                    images.removeAt(position)
-                    renderImages()
-                }
-            })
-        imagesList.adapter = adapter
+        }).execute(imagesViewUtil!!.getImages())
     }
 
     /**
      * Receives images from the selector
      */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (ImagePicker.shouldHandle(requestCode, resultCode, data)) {
-            images.addAll(ImagePicker.getImages(data))
-            renderImages()
-        }
+        if (ImagePicker.shouldHandle(requestCode, resultCode, data))
+            imagesViewUtil!!.processImages(data)
         super.onActivityResult(requestCode, resultCode, data)
     }
 }
