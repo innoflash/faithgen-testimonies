@@ -79,7 +79,7 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
         menuItems.add(MenuItem(R.drawable.ic_share_24, Constants.SHARE))
         menuItems.add(MenuItem(R.drawable.ic_comments_24, Constants.COMMENTS))
         menuItems.add(MenuItem(R.drawable.ic_testimonies_24, moreTestimonies))
-        if (belongsToMe) {
+        if (!belongsToMe) {
             menuItems.add(MenuItem(R.drawable.ic_pencil_24, Constants.EDIT))
             menuItems.add(MenuItem(R.drawable.ic_trash_24, Constants.DELETE))
         }
@@ -107,7 +107,7 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
                     startActivity(intent)
                 }
                 3 -> {
-                    if (belongsToMe) openUpdateTestimony()
+                    if (!belongsToMe) openUpdateTestimony()
                     else finish()
                 }
                 4 -> Dialogs.confirmDialog(

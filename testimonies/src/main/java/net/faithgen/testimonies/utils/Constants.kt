@@ -49,4 +49,5 @@ object Constants {
     const val DELETING_IMAGE = "Deleting image..."
     const val UPDATING_TESTIMONY = "Updating testimony..."
     const val FETCHING_TESTIMONY = "Opening testimony..."
+    const val UPDATE_TESTIMONY = "Update Testimony"
 }
