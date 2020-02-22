@@ -114,7 +114,7 @@ final class TestimonyImagesViewUtil(
     private fun renderImages() {
         val adapter =
             TestimonyImagesAdapter(context, images, object : TestimonyImagesAdapter.ImageListener {
-                override fun onRemoved(position: Int, image: Image) {
+                override fun onRemoved(position: Int, image: Image?) {
                     images.removeAt(position)
                     renderImages()
                 }

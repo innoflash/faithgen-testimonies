@@ -29,8 +29,8 @@ class ImagesAdapter(val context: Context, val images: List<Image>) :
     override fun onBindViewHolder(holder: ImageHolder, position: Int) {
         Picasso.get()
             .load(images.get(position).avatar._100)
-            .placeholder(R.drawable.ic_user_100)
-            .error(R.drawable.ic_user_100)
+            .placeholder(R.drawable.ef_image_placeholder)
+            .error(R.drawable.ef_image_placeholder)
             .into(holder.imageView)
     }
 }

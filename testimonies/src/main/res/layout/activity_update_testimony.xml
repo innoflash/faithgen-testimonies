@@ -24,5 +24,17 @@
             android:gravity="center"
             android:text="@string/update_testimony"
             android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/tImages"
+            style="@style/block_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/current_images" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/testimonyImages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

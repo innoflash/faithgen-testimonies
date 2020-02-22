@@ -59,7 +59,7 @@ final class CreateTestimonyActivity : FaithGenActivity() {
      * If testimony has images it will encode first before uploading
      */
     private fun prepareTestimony() {
-        if (imagesViewUtil!!.getImages().size === 0)
+        if (imagesViewUtil!!.getImages().isEmpty())
             uploadTestimony()
         else encodeImages()
     }

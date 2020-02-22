@@ -4,28 +4,22 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.esafirm.imagepicker.model.Image
 import com.squareup.picasso.Picasso
 import net.faithgen.testimonies.R
+import net.faithgen.testimonies.models.Image
 import net.faithgen.testimonies.viewholders.TestimonyImageHolder
 import java.io.File
 
 /**
- * This is a an adapter to display images for uploading
+ * This class renders images from the server for a given testimony
  */
-final class TestimonyImagesAdapter(
+final class UpdateImagesAdapter(
     private val context: Context,
     private val images: List<Image>,
-    private val imageListener: ImageListener?
-) :
-    RecyclerView.Adapter<TestimonyImageHolder>() {
-    private val layoutInflater: LayoutInflater by lazy {
-        LayoutInflater.from(context)
-    }
+    private val imageListener: TestimonyImagesAdapter.ImageListener?
+) : RecyclerView.Adapter<TestimonyImageHolder>() {
 
-    public interface ImageListener {
-        fun onRemoved(position: Int, image: Image?)
-    }
+    private val layoutInflater: LayoutInflater by lazy { LayoutInflater.from(context) }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TestimonyImageHolder {
         return TestimonyImageHolder(layoutInflater.inflate(R.layout.grid_item_image, parent, false))
@@ -37,10 +31,10 @@ final class TestimonyImagesAdapter(
         val image = images.get(position)
         holder.removeImage.setOnClickListener {
             if (imageListener !== null)
-                imageListener.onRemoved(position, image)
+                imageListener.onRemoved(position, null)
         }
         Picasso.get()
-            .load(File(image.path))
+            .load(image.avatar._100)
             .placeholder(R.drawable.ef_image_placeholder)
             .error(R.drawable.ef_image_placeholder)
             .into(holder.imageView)

@@ -94,6 +94,7 @@ final class ImagesSliderDialog(
                             override fun onYes() {
                                 faithGenAPI.setParams(params)
                                     .setMethod(Request.Method.POST)
+                                    .setProcess(Constants.DELETING_IMAGE)
                                     .setServerResponse(object : ServerResponse() {
                                         override fun onServerResponse(serverResponse: String?) {
                                             val response: Response<*> =
