@@ -20,7 +20,7 @@
             android:layout_height="@dimen/dimen30"
             android:layout_marginTop="@dimen/dimen10"
             android:layout_marginBottom="@dimen/dimen10"
-            android:background="@color/ios_blue"
+            android:background="@color/ios_green"
             android:gravity="center"
             android:text="@string/update_testimony"
             android:textColor="@color/white" />
@@ -36,5 +36,18 @@
             android:id="@+id/testimonyImages"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <include layout="@layout/layout_testimony_images" />
+
+        <Button
+            android:id="@+id/uploadImages"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen30"
+            android:layout_marginTop="@dimen/dimen10"
+            android:layout_marginBottom="@dimen/dimen10"
+            android:background="@color/ios_green"
+            android:gravity="center"
+            android:text="@string/uploadImages"
+            android:textColor="@color/white" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

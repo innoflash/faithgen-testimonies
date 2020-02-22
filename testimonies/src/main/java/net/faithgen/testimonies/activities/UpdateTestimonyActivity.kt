@@ -7,9 +7,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.android.volley.Request
+import com.esafirm.imagepicker.features.ImagePicker
 import com.esafirm.imagepicker.model.Image
 import kotlinx.android.synthetic.main.activity_update_testimony.*
 import net.faithgen.sdk.FaithGenActivity
+import net.faithgen.sdk.SDK
 import net.faithgen.sdk.http.ErrorResponse
 import net.faithgen.sdk.http.FaithGenAPI
 import net.faithgen.sdk.http.Response
@@ -21,8 +23,10 @@ import net.faithgen.testimonies.R
 import net.faithgen.testimonies.adapters.TestimonyImagesAdapter
 import net.faithgen.testimonies.adapters.UpdateImagesAdapter
 import net.faithgen.testimonies.models.Testimony
+import net.faithgen.testimonies.tasks.EncodeImages
 import net.faithgen.testimonies.utils.Constants
 import net.faithgen.testimonies.utils.TestimonyCRUDViewUtil
+import net.faithgen.testimonies.utils.TestimonyImagesViewUtil
 
 /**
  * This updates the testimony
@@ -47,15 +51,27 @@ final class UpdateTestimonyActivity : FaithGenActivity() {
         )
     }
 
+    // serves the basic parts of the testimony
     private var crudViewUtil: TestimonyCRUDViewUtil? = null
+
+    // serves the images section
+    private var imagesViewUtil: TestimonyImagesViewUtil? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_testimony)
 
         crudViewUtil = TestimonyCRUDViewUtil(view, testimony)
+        imagesViewUtil =
+            TestimonyImagesViewUtil(view, this@UpdateTestimonyActivity, testimony.images.size)
+
+        imagesViewUtil?.initViews()
 
         updateTestimony.setOnClickListener { runUpdateRequest() }
+        uploadImages.setOnClickListener { prepareImagesForUpload() }
+
+        if (SDK.getMinistry().account == Constants.FREE)
+            uploadImages.visibility = View.GONE
 
         if (testimony.images.isNullOrEmpty()) tImages.visibility = View.GONE
 
@@ -68,6 +84,19 @@ final class UpdateTestimonyActivity : FaithGenActivity() {
         resultIntent.putExtra(Constants.SHOULD_REFRESH, shouldRefresh)
         setResult(Activity.RESULT_OK, resultIntent)
         faithGenAPI.cancelRequests()
+    }
+
+    /**
+     * Encodes images for upload
+     */
+    private fun prepareImagesForUpload(){
+        if(imagesViewUtil?.getImages().isNullOrEmpty())
+            Dialogs.showOkDialog(this@UpdateTestimonyActivity, Constants.NO_IMAGES, false)
+        else EncodeImages(this@UpdateTestimonyActivity, object : EncodeImages.EncodingListener {
+            override fun onEncodeFinished(encodedImages: List<String>) {
+                uploadImagesToServer(encodedImages)
+            }
+        }).execute(imagesViewUtil?.getImages())
     }
 
     /**
@@ -161,5 +190,14 @@ final class UpdateTestimonyActivity : FaithGenActivity() {
     override fun onStart() {
         super.onStart()
         crudViewUtil!!.initViews()
+    }
+
+    /**
+     * Receives images from the selector
+     */
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (ImagePicker.shouldHandle(requestCode, resultCode, data))
+            imagesViewUtil!!.processImages(data)
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }

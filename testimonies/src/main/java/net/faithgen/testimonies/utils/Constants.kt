@@ -52,4 +52,5 @@ object Constants {
     const val UPDATING_TESTIMONY = "Updating testimony..."
     const val FETCHING_TESTIMONY = "Opening testimony..."
     const val UPDATE_TESTIMONY = "Update Testimony"
+    const val NO_IMAGES = "You did not select any images for upload, please choose some"
 }
