@@ -133,7 +133,7 @@ final class TestimoniesActivity : FaithGenActivity() {
             arcMenu.setChildSize(menuItem.intrinsicHeight)
             arcMenu.addItem(menuItem, pair.second) {
                 when (index) {
-                    0 -> if (!isLoggedIn())
+                    0 -> if (isLoggedIn())
                         startActivity(
                             Intent(
                                 this@TestimoniesActivity,

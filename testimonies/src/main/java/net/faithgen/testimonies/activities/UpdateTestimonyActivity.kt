@@ -2,7 +2,6 @@ package net.faithgen.testimonies.activities
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
@@ -73,7 +72,7 @@ final class UpdateTestimonyActivity : FaithGenActivity() {
         if (SDK.getMinistry().account == Constants.FREE)
             uploadImages.visibility = View.GONE
 
-        if (testimony.images.isNullOrEmpty()) tImages.visibility = View.GONE
+        if (testimony.images.isNullOrEmpty()) theImages.visibility = View.GONE
 
         renderTestimonyImages()
     }
@@ -89,14 +88,47 @@ final class UpdateTestimonyActivity : FaithGenActivity() {
     /**
      * Encodes images for upload
      */
-    private fun prepareImagesForUpload(){
-        if(imagesViewUtil?.getImages().isNullOrEmpty())
+    private fun prepareImagesForUpload() {
+        if (imagesViewUtil?.getImages().isNullOrEmpty())
             Dialogs.showOkDialog(this@UpdateTestimonyActivity, Constants.NO_IMAGES, false)
         else EncodeImages(this@UpdateTestimonyActivity, object : EncodeImages.EncodingListener {
             override fun onEncodeFinished(encodedImages: List<String>) {
                 uploadImagesToServer(encodedImages)
             }
         }).execute(imagesViewUtil?.getImages())
+    }
+
+    /**
+     * Sends the encoded images to the server
+     */
+    private fun uploadImagesToServer(encodedImages: List<String>) {
+        val params: Map<String, String> = hashMapOf(
+            Pair(Constants.TESTIMONY_ID, testimonyId),
+            Pair(Constants.IMAGES, GSONSingleton.instance.gson.toJson(encodedImages))
+        )
+        faithGenAPI
+            .setProcess(Constants.UPLOADING_IMAGES)
+            .setParams(params as HashMap<String, String>)
+            .setMethod(Request.Method.POST)
+            .setServerResponse(object : ServerResponse() {
+                override fun onServerResponse(serverResponse: String?) {
+                    val response: Response<*> =
+                        GSONSingleton.instance.gson.fromJson(serverResponse, Response::class.java)
+                    Dialogs.showOkDialog(this@UpdateTestimonyActivity, response.message, false)
+                    if (response.success)
+                        shouldRefresh = true
+
+                }
+
+                override fun onError(errorResponse: ErrorResponse?) {
+                    Dialogs.showOkDialog(
+                        this@UpdateTestimonyActivity,
+                        errorResponse?.message,
+                        false
+                    )
+                }
+            })
+            .request("${Constants.TESTIMONIES_URL}/add-image")
     }
 
     /**
@@ -152,6 +184,14 @@ final class UpdateTestimonyActivity : FaithGenActivity() {
                         }
                         renderTestimonyImages()
                     }
+                }
+
+                override fun onError(errorResponse: ErrorResponse?) {
+                    Dialogs.showOkDialog(
+                        this@UpdateTestimonyActivity,
+                        errorResponse?.message,
+                        false
+                    )
                 }
             })
             .request("${Constants.TESTIMONIES_URL}/delete-image")
