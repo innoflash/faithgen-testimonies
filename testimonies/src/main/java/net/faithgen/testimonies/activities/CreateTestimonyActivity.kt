@@ -8,6 +8,7 @@ import com.android.volley.Request
 import com.esafirm.imagepicker.features.ImagePicker
 import com.esafirm.imagepicker.model.Image
 import kotlinx.android.synthetic.main.activity_create_testimony.*
+import kotlinx.android.synthetic.main.layout_testimony_crud.*
 import net.faithgen.sdk.FaithGenActivity
 import net.faithgen.sdk.SDK
 import net.faithgen.sdk.http.ErrorResponse

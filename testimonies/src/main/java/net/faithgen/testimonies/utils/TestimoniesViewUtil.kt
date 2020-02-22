@@ -1,4 +1,4 @@
-package net.faithgen.testimonies
+package net.faithgen.testimonies.utils
 
 import android.content.Context
 import android.content.Intent
@@ -12,6 +12,8 @@ import net.faithgen.sdk.http.FaithGenAPI
 import net.faithgen.sdk.http.Pagination
 import net.faithgen.sdk.http.types.ServerResponse
 import net.faithgen.sdk.singletons.GSONSingleton
+import net.faithgen.testimonies.Constants
+import net.faithgen.testimonies.R
 import net.faithgen.testimonies.activities.TestimonyActivity
 import net.faithgen.testimonies.adapters.LI3Adapter
 import net.faithgen.testimonies.models.TestimoniesResponse
@@ -25,7 +27,7 @@ import net.innoflash.iosview.swipelib.SwipeRefreshLayout
  * Fetch testimonies
  * Render testimonies
  */
-final class ViewUtil(val context: Context, private val view: View) : RecyclerViewClickListener,
+final class TestimoniesViewUtil(val context: Context, private val view: View) : RecyclerViewClickListener,
     SwipeRefreshLayout.OnRefreshListener {
 
     private var filterText: String? = null

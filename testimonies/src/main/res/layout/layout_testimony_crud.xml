@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/tLink"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <net.innoflash.iosview.InputField
+                android:id="@+id/testimonyTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences"
+                app:input_heading="@string/title"
+                app:input_hint="@string/title_here"
+                app:input_icon="@drawable/ic_edit_column_100" />
+
+            <net.innoflash.iosview.InputField
+                android:id="@+id/testimonyLink"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textUri"
+                app:input_heading="@string/resource"
+                app:input_hint="@string/link_"
+                app:input_icon="@drawable/ic_edit_column_100" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        style="@style/block_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/testimony" />
+
+    <EditText
+        android:id="@+id/testimonyBody"
+        style="@style/helvetica_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen10"
+        android:background="@drawable/testimony_field_background"
+        android:gravity="start"
+        android:hint="@string/testimony_here"
+        android:inputType="textCapSentences"
+        android:minHeight="200dp" />
+
+</LinearLayout>

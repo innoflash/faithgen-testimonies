@@ -2,11 +2,8 @@ package net.faithgen.testimonies.activities
 
 import android.content.Intent
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import br.com.liveo.searchliveo.SearchLiveo
 import com.bvapp.arcmenulibrary.ArcMenu
 import com.bvapp.arcmenulibrary.widget.FloatingActionButton
@@ -17,7 +14,7 @@ import net.faithgen.sdk.SDK
 import net.faithgen.sdk.utils.Dialogs
 import net.faithgen.testimonies.Constants
 import net.faithgen.testimonies.R
-import net.faithgen.testimonies.ViewUtil
+import net.faithgen.testimonies.utils.TestimoniesViewUtil
 
 /**
  * The activity to show all the testimonies in a paginated way
@@ -26,7 +23,7 @@ import net.faithgen.testimonies.ViewUtil
  */
 final class TestimoniesActivity : FaithGenActivity() {
     private var filter_text: String? = ""
-    private var viewUtil: ViewUtil? = null
+    private var testimoniesViewUtil: TestimoniesViewUtil? = null
     private val menuItems: MutableList<Pair<Int, String>> = mutableListOf()
 
     override fun getPageTitle(): String {
@@ -40,22 +37,25 @@ final class TestimoniesActivity : FaithGenActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_testimonies)
 
-        viewUtil =
-            ViewUtil(this@TestimoniesActivity, view)
-        viewUtil?.initViewsCallbacks()
+        testimoniesViewUtil =
+            TestimoniesViewUtil(
+                this@TestimoniesActivity,
+                view
+            )
+        testimoniesViewUtil?.initViewsCallbacks()
 
         initMenu()
 
         searchLiveo.with(this) { charSequence ->
             filter_text = charSequence as String
-            viewUtil?.loadTestimonies(Constants.TESTIMONIES_URL, filter_text.orEmpty(), true)
+            testimoniesViewUtil?.loadTestimonies(Constants.TESTIMONIES_URL, filter_text.orEmpty(), true)
         }.showVoice()
             .hideKeyboardAfterSearch()
             .hideSearch {
                 toolbar.visibility = View.VISIBLE
                 filter_text = ""
                 searchLiveo.text("")
-                viewUtil?.loadTestimonies(Constants.TESTIMONIES_URL, "", true)
+                testimoniesViewUtil?.loadTestimonies(Constants.TESTIMONIES_URL, "", true)
             }.build()
 
         setOnOptionsClicked(R.drawable.ic_search_blue) { openSearch() }
@@ -81,7 +81,7 @@ final class TestimoniesActivity : FaithGenActivity() {
 
     override fun onStop() {
         super.onStop()
-        viewUtil?.faithGenAPI?.cancelRequests()
+        testimoniesViewUtil?.faithGenAPI?.cancelRequests()
     }
 
     /**
@@ -96,8 +96,8 @@ final class TestimoniesActivity : FaithGenActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (viewUtil?.testimonies?.size === 0)
-            viewUtil?.loadTestimonies(Constants.TESTIMONIES_URL, filter_text!!, true)
+        if (testimoniesViewUtil?.testimonies?.size === 0)
+            testimoniesViewUtil?.loadTestimonies(Constants.TESTIMONIES_URL, filter_text!!, true)
     }
 
     /**
@@ -109,7 +109,7 @@ final class TestimoniesActivity : FaithGenActivity() {
         menuItems.add(Pair(R.drawable.ic_search_100, Constants.SEARCH))
         menuItems.add(Pair(R.drawable.ic_exit_100, Constants.EXIT.toUpperCase()))
 
-        arcMenu.attachToRecyclerView(viewUtil!!.testimoniesView)
+        arcMenu.attachToRecyclerView(testimoniesViewUtil!!.testimoniesView)
         arcMenu.showTooltip(true)
         arcMenu.setToolTipBackColor(Color.GRAY)
         arcMenu.setToolTipCorner(6f)
