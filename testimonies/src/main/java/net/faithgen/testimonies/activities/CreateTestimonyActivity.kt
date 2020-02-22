@@ -8,7 +8,6 @@ import com.android.volley.Request
 import com.esafirm.imagepicker.features.ImagePicker
 import com.esafirm.imagepicker.model.Image
 import kotlinx.android.synthetic.main.activity_create_testimony.*
-import kotlinx.android.synthetic.main.layout_testimony_crud.*
 import net.faithgen.sdk.FaithGenActivity
 import net.faithgen.sdk.SDK
 import net.faithgen.sdk.http.ErrorResponse
@@ -21,6 +20,7 @@ import net.faithgen.testimonies.Constants
 import net.faithgen.testimonies.R
 import net.faithgen.testimonies.adapters.TestimonyImagesAdapter
 import net.faithgen.testimonies.tasks.EncodeImages
+import net.faithgen.testimonies.utils.TestimonyCRUDViewUtil
 import java.util.ArrayList
 
 /**
@@ -28,8 +28,9 @@ import java.util.ArrayList
  */
 final class CreateTestimonyActivity : FaithGenActivity() {
     private val images: MutableList<Image> = mutableListOf()
-    private val params: MutableMap<String, String> = mutableMapOf()
     private var imagesLeft: Int = 0
+
+    private var crudViewUtil: TestimonyCRUDViewUtil? = null
 
     private val imageMaxs: HashMap<String, Int> = hashMapOf(
         Pair(Constants.PREMIUM, Constants.Numbers.PREMIUM_MAX),
@@ -47,8 +48,9 @@ final class CreateTestimonyActivity : FaithGenActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_testimony)
 
-        if (SDK.getMinistry().account != Constants.PREMIUM_PLUS)
-            testimonyLink.visibility = View.GONE
+        crudViewUtil = TestimonyCRUDViewUtil(view, null)
+        crudViewUtil!!.initViews()
+
         if (SDK.getMinistry().account == Constants.FREE) {
             tImages.visibility = View.GONE
             selectImages.visibility = View.GONE
@@ -78,10 +80,6 @@ final class CreateTestimonyActivity : FaithGenActivity() {
      * If testimony has images it will encode first before uploading
      */
     private fun prepareTestimony() {
-        params.put(Constants.TITLE, testimonyTitle.value)
-        params.put(Constants.TESTIMONY, testimonyBody.text.toString())
-        if (testimonyLink.value.isNotEmpty())
-            params.put(Constants.RESOURCE, testimonyLink.value)
         if (images.size === 0)
             uploadTestimony()
         else encodeImages()
@@ -92,7 +90,7 @@ final class CreateTestimonyActivity : FaithGenActivity() {
      */
     private fun uploadTestimony() {
         faithGenAPI
-            .setParams(params as HashMap<String, String>)
+            .setParams(crudViewUtil?.getParams() as HashMap<String, String>)
             .setMethod(Request.Method.POST)
             .setServerResponse(object : ServerResponse() {
                 override fun onServerResponse(serverResponse: String?) {
@@ -138,7 +136,8 @@ final class CreateTestimonyActivity : FaithGenActivity() {
     private fun encodeImages() {
         EncodeImages(this@CreateTestimonyActivity, object : EncodeImages.EncodingListener {
             override fun onEncodeFinished(encodedImages: List<String>) {
-                params.put(Constants.IMAGES, GSONSingleton.instance.gson.toJson(encodedImages))
+                crudViewUtil!!.getParams()
+                    .put(Constants.IMAGES, GSONSingleton.instance.gson.toJson(encodedImages))
                 uploadTestimony()
             }
         }).execute(images)
