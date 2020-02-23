@@ -80,7 +80,7 @@ final class TestimoniesViewUtil(val context: Context, private val view: View) :
      */
     fun loadTestimonies(url: String, filterText: String, reload: Boolean) {
         this.filterText = filterText
-        if (filterText.length !== 0) {
+        if (filterText.isNotBlank()) {
             params = hashMapOf()
             params?.put(Constants.FILTER_TEXT, filterText)
         } else params = null

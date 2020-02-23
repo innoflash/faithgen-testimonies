@@ -114,10 +114,11 @@ final class UpdateTestimonyActivity : FaithGenActivity() {
                 override fun onServerResponse(serverResponse: String?) {
                     val response: Response<*> =
                         GSONSingleton.instance.gson.fromJson(serverResponse, Response::class.java)
-                    Dialogs.showOkDialog(this@UpdateTestimonyActivity, response.message, false)
-                    if (response.success)
-                        shouldRefresh = true
-
+                    Dialogs.showOkDialog(this@UpdateTestimonyActivity, response.message) {
+                        if (response.success)
+                            shouldRefresh = true
+                        finish()
+                    }
                 }
 
                 override fun onError(errorResponse: ErrorResponse?) {
@@ -176,13 +177,14 @@ final class UpdateTestimonyActivity : FaithGenActivity() {
                 override fun onServerResponse(serverResponse: String?) {
                     val response: Response<*> =
                         GSONSingleton.instance.gson.fromJson(serverResponse, Response::class.java)
-                    Dialogs.showOkDialog(this@UpdateTestimonyActivity, response.message, false)
-                    if (response.success) {
-                        shouldRefresh = true
-                        testimony.images = testimony.images.filter { image ->
-                            image.id !== testimony.images.get(position).id
+                    Dialogs.showOkDialog(this@UpdateTestimonyActivity, response.message) {
+                        if (response.success) {
+                            shouldRefresh = true
+                            testimony.images = testimony.images.filter { image ->
+                                image.id !== testimony.images.get(position).id
+                            }
+                            renderTestimonyImages()
                         }
-                        renderTestimonyImages()
                     }
                 }
 
@@ -210,8 +212,12 @@ final class UpdateTestimonyActivity : FaithGenActivity() {
                 override fun onServerResponse(serverResponse: String?) {
                     val response: Response<*> =
                         GSONSingleton.instance.gson.fromJson(serverResponse, Response::class.java)
-                    if (response.success) shouldRefresh = true
-                    Dialogs.showOkDialog(this@UpdateTestimonyActivity, response.message, true)
+                    Dialogs.showOkDialog(this@UpdateTestimonyActivity, response.message) {
+                        if (response.success) {
+                            shouldRefresh = true
+                            finish()
+                        }
+                    }
                 }
 
                 override fun onError(errorResponse: ErrorResponse?) {

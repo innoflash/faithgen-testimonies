@@ -45,7 +45,11 @@ class UserTestimoniesActivity : FaithGenActivity() {
      */
     override fun onStart() {
         super.onStart()
-        if (testimoniesViewUtil!!.testimonies.size === 0)
-            testimoniesViewUtil?.loadTestimonies("${Constants.TESTIMONIES_URL}/user/$userId", "", true)
+        if (testimoniesViewUtil!!.testimonies.isEmpty())
+            testimoniesViewUtil?.loadTestimonies(
+                "${Constants.TESTIMONIES_URL}/user/$userId",
+                "",
+                true
+            )
     }
 }

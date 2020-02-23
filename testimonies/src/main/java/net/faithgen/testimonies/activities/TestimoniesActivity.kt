@@ -48,7 +48,11 @@ final class TestimoniesActivity : FaithGenActivity() {
 
         searchLiveo.with(this) { charSequence ->
             filter_text = charSequence as String
-            testimoniesViewUtil?.loadTestimonies(Constants.TESTIMONIES_URL, filter_text.orEmpty(), true)
+            testimoniesViewUtil?.loadTestimonies(
+                Constants.TESTIMONIES_URL,
+                filter_text.orEmpty(),
+                true
+            )
         }.showVoice()
             .hideKeyboardAfterSearch()
             .hideSearch {
@@ -96,7 +100,7 @@ final class TestimoniesActivity : FaithGenActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (testimoniesViewUtil?.testimonies?.size === 0)
+        if (testimoniesViewUtil?.testimonies?.isEmpty()!!)
             testimoniesViewUtil?.loadTestimonies(Constants.TESTIMONIES_URL, filter_text!!, true)
     }
 

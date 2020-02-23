@@ -76,9 +76,10 @@ final class CreateTestimonyActivity : FaithGenActivity() {
                 override fun onServerResponse(serverResponse: String?) {
                     val response: Response<*> =
                         GSONSingleton.instance.gson.fromJson(serverResponse, Response::class.java)
-                    Dialogs.showOkDialog(this@CreateTestimonyActivity, response.message, false)
-                    if (response.success)
-                        openMyTestimonies()
+                    Dialogs.showOkDialog(this@CreateTestimonyActivity, response.message) {
+                        if (response.success)
+                            openMyTestimonies()
+                    }
                 }
 
                 override fun onError(errorResponse: ErrorResponse?) {
