@@ -197,7 +197,7 @@ class TestimonyActivity : FaithGenActivity(), RecyclerViewClickListener {
         initMenu()
 
         Picasso.get()
-            .load(testimony?.user?.picture)
+            .load(testimony?.user?.avatar?.original)
             .placeholder(R.drawable.ic_user_100)
             .error(R.drawable.ic_user_100)
             .into(userImage)

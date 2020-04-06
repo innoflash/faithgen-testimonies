@@ -27,7 +27,7 @@ final class LI3Adapter(private val context: Context, private val testimonies : L
     override fun onBindViewHolder(holder: LI3Holder, position: Int) {
         val testimony = testimonies.get(position)
         Picasso.get()
-            .load(testimony.user.picture)
+            .load(testimony.user.avatar._50)
             .placeholder(R.drawable.ic_user_100)
             .error(R.drawable.ic_user_100)
             .into(holder.li3View.circleImageView)
